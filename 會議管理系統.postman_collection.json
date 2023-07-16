@@ -1,0 +1,347 @@
+{
+	"info": {
+		"_postman_id": "7be23927-1543-47d3-9159-329a36bc65c4",
+		"name": "會議管理系統",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
+		"_exporter_id": "14870945"
+	},
+	"item": [
+		{
+			"name": "使用者",
+			"item": [
+				{
+					"name": "localhost:3000/user",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IkExMjMiLCJhY2NvdW50IjoienhjdiIsImlhdCI6MTY4Nzk2NTYwMywiZXhwIjoxNjg3OTY2MjAzfQ.HSLXCIpocRnHL-hcPkdeHJCI4V2Pb4u3qu03JDWNg3c"
+							}
+						},
+						"method": "GET",
+						"header": [],
+						"url": "localhost:3000/user"
+					},
+					"response": []
+				},
+				{
+					"name": "localhost:3000/user/A124",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"name\":\"uuu\",\"account\":\"asdfgh\",\"password\":\"zxcqwe\"}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "localhost:3000/user/A124"
+					},
+					"response": []
+				},
+				{
+					"name": "localhost:3000/user/A124",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": "localhost:3000/user/A124"
+					},
+					"response": []
+				},
+				{
+					"name": "註冊",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"id\": \"A124\",\r\n    \"name\": \"asdf\",\r\n    \"account\": \"zxcv\",\r\n    \"password\": \"qwerty\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "localhost:3000/auth/register"
+					},
+					"response": []
+				},
+				{
+					"name": "登入",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"account\": \"asdfgh\",\r\n    \"password\": \"zxcqwe\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "localhost:3000/auth/login"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "會議",
+			"item": [
+				{
+					"name": "參與者",
+					"item": [
+						{
+							"name": "localhost:3000/meeting-member",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"meetingId\": \"M044\",\r\n    \"employeeId\": \"A124\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": "localhost:3000/meeting-member"
+							},
+							"response": []
+						},
+						{
+							"name": "localhost:3000/meeting-member/meeting/M030",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": "localhost:3000/meeting-member/"
+							},
+							"response": []
+						},
+						{
+							"name": "localhost:3000/meeting-member/meeting/M030",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": "localhost:3000/meeting-member/meeting/M030"
+							},
+							"response": []
+						},
+						{
+							"name": "localhost:3000/meeting-member/11",
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": "localhost:3000/meeting-member/M044/A124"
+							},
+							"response": []
+						},
+						{
+							"name": "簽到",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": "localhost:3000/meeting-member/signin/M044/A124"
+							},
+							"response": []
+						},
+						{
+							"name": "簽退",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": "localhost:3000/meeting-member/signout/M044/A124"
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "localhost:3000/meeting",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"let start = new Date(2023,6,7,15,30);\r",
+									"postman.setEnvironmentVariable(\"start\", start.toISOString())\r",
+									"\r",
+									"let end = new Date(2023,6,7,20,30);\r",
+									"postman.setEnvironmentVariable(\"end\", end.toISOString())"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"asd\",\r\n    \"meetingRoomId\":\"A001\",\r\n    \"creatorId\":\"A124\",\r\n    \"start\": \"{{start}}\",\r\n    \"end\": \"{{end}}\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "localhost:3000/meeting"
+					},
+					"response": []
+				},
+				{
+					"name": "localhost:3000/meeting",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"let start = new Date(2022,6,7,18,25);\r",
+									"postman.setEnvironmentVariable(\"start\", start.toISOString())\r",
+									"\r",
+									"let end = new Date(2022,6,7,19,25);\r",
+									"postman.setEnvironmentVariable(\"end\", end.toISOString())"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"zzzz\",\r\n    \"meetingRoomId\":\"A001\",\r\n    \"creatorId\":\"A124\",\r\n    \"start\": \"{{start}}\",\r\n    \"end\": \"{{end}}\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "localhost:3000/meeting/M034"
+					},
+					"response": []
+				},
+				{
+					"name": "localhost:3000/meeting",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "localhost:3000/meeting"
+					},
+					"response": []
+				},
+				{
+					"name": "localhost:3000/meeting/M012",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": "localhost:3000/meeting/M012"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "會議室",
+			"item": [
+				{
+					"name": "localhost:3000/meeting-room",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"id\": \"A005\",\r\n    \"name\": \"MA324\",\r\n    \"location\": \"管一三樓\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "localhost:3000/meeting-room"
+					},
+					"response": []
+				},
+				{
+					"name": "localhost:3000/meeting-room/A00",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": "localhost:3000/meeting-room/A00"
+					},
+					"response": []
+				},
+				{
+					"name": "localhost:3000/meeting-room/A003",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"MA217\",\r\n    \"location\": \"管一三樓\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "localhost:3000/meeting-room/A003"
+					},
+					"response": []
+				},
+				{
+					"name": "localhost:3000/meeting-room",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "localhost:3000/meeting-room"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "會議室借用",
+			"item": [
+				{
+					"name": "localhost:3000/meetingroom-borrow",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"let start = new Date(2023,6,6,18,30);\r",
+									"postman.setEnvironmentVariable(\"start\", start.toISOString())\r",
+									"\r",
+									"let end = new Date(2023,6,7,19,30);\r",
+									"postman.setEnvironmentVariable(\"end\", end.toISOString())"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"meetingRoomId\": \"A001\",\r\n    \"start\":\"{{start}}\",\r\n    \"end\": \"{{end}}\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "localhost:3000/meetingroom-borrow"
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}

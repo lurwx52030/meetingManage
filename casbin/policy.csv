@@ -1,0 +1,4 @@
+p, role:admin, /user, *
+p, role:admin, /user/:id, *
+p, role:employee, /meeting, *
+p, role:employee, /meeting/:id, *
