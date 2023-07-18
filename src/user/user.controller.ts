@@ -32,6 +32,7 @@ export class UserController {
   }
 
   @UseGuards(AuthGuard('jwt'))
+  @UseGuards(RoleGuard)
   @Get(':id')
   async getUser(@Param('id') id: string) {
     const user = await this.userService.getUserById(id);
@@ -40,12 +41,14 @@ export class UserController {
   }
 
   @UseGuards(AuthGuard('jwt'))
+  @UseGuards(RoleGuard)
   @Put(':id')
   update(@Param('id') id: string, @Body() updateMettingRoomDto: UpdateUserDto) {
     return this.userService.update(id, updateMettingRoomDto);
   }
 
   @UseGuards(AuthGuard('jwt'))
+  @UseGuards(RoleGuard)
   @Delete(':id')
   remove(@Param('id') id: string) {
     return this.userService.remove(id);
