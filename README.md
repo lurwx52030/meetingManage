@@ -1,7 +1,7 @@
 # meetingManage_Backend
 ## 資料庫設定
 1. 打開phpmyadmin，導入`meeting_manage.sql`
-2. 打開`config.yml`，把資料庫的帳號密碼換成自己的
+2. 將`./config.yml`改成`config.yml`，把資料庫的帳號密碼跟linebot相關的token換成自己的
 ## 啟動程式
 1. 利用`npm i`安裝dependencies
 2. 利用`npm run debug`啟動程式
