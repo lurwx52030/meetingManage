@@ -1,5 +1,19 @@
 p, role:admin, /user, *
 p, role:admin, /user/:id, *
+
 p, role:employee, /user/:id, read
+
 p, role:employee, /meeting, *
 p, role:employee, /meeting/:id, *
+
+p, role:employee, /meeting-room, *
+p, role:employee, /meeting-room/:id, *
+
+p, role:employee, /meeting-member, *
+p, role:employee, /meeting-member/:id, *
+p, role:employee, /meeting-member/meeting, *
+p, role:employee, /meeting-member/meeting/:id, *
+p, role:employee, /meeting-member/signin/:meetingid/:id, *
+p, role:employee, /meeting-member/signout/:meetingid/:id, *
+p, role:employee, /meeting-member/:meetingid/:id, *
+

@@ -34,6 +34,7 @@ export class UserController {
   @UseGuards(AuthGuard('jwt'))
   @UseGuards(RoleGuard)
   @Get(':id')
+  //TODO: 依據權限來給資料，admin可以取得任意employee，employee只能拿自己的
   async getUser(@Param('id') id: string) {
     const user = await this.userService.getUserById(id);
     const { password, salt, ...others } = user.data;

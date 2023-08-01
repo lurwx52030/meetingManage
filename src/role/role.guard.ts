@@ -1,6 +1,8 @@
 import {
   CanActivate,
   ExecutionContext,
+  HttpException,
+  HttpStatus,
   Injectable,
   UnauthorizedException,
 } from '@nestjs/common';
@@ -21,6 +23,15 @@ export class RoleGuard implements CanActivate {
     context: ExecutionContext,
   ): boolean | Promise<boolean> | Observable<boolean> {
     const request: Request = context.switchToHttp().getRequest();
+    if (
+      request.headers['authorization'] === null ||
+      request.headers['authorization'] === undefined
+    ) {
+      throw new HttpException(
+        'token is not valid or empty',
+        HttpStatus.UNAUTHORIZED,
+      );
+    }
     const jwtToken = (request.headers['authorization'] as string).replace(
       'Bearer ',
       '',

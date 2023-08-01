@@ -7,17 +7,22 @@ import {
   Param,
   Delete,
   Put,
+  UseGuards,
 } from '@nestjs/common';
 import { MeetingMemberService } from './meeting-member.service';
 import { CreateMeetingMemberDto } from './dto/create-meeting-member.dto';
 import { UpdateMeetingMemberDto } from './dto/update-meeting-member.dto';
 import { Result } from 'src/common/standardResult';
+import { AuthGuard } from '@nestjs/passport';
+import { RoleGuard } from 'src/role/role.guard';
 
 @Controller('meeting-member')
 export class MeetingMemberController {
   constructor(private readonly meetingMemberService: MeetingMemberService) {}
 
   @Post()
+  @UseGuards(AuthGuard('jwt'))
+  @UseGuards(RoleGuard)
   async create(@Body() createMeetingMemberDto: CreateMeetingMemberDto) {
     const res = await this.meetingMemberService.create(createMeetingMemberDto);
     if (res.raw.affectedRows > 0) {
@@ -28,18 +33,24 @@ export class MeetingMemberController {
   }
 
   @Get()
+  @UseGuards(AuthGuard('jwt'))
+  @UseGuards(RoleGuard)
   async findAll() {
     const res = await this.meetingMemberService.findAll();
     return Result.ok(res, '查詢成功');
   }
 
   @Get('/meeting/:id')
+  @UseGuards(AuthGuard('jwt'))
+  @UseGuards(RoleGuard)
   async findOne(@Param('id') id: string) {
     const res = await this.meetingMemberService.findOneByMeeting(id);
     return Result.ok(res, '查詢成功');
   }
 
   @Get('/signin/:meetingid/:id')
+  @UseGuards(AuthGuard('jwt'))
+  @UseGuards(RoleGuard)
   async signIn(@Param('id') id: string, @Param('meetingid') meetingid: string) {
     const res = await this.meetingMemberService.attendance(id, meetingid, true);
     console.log(res);
@@ -51,6 +62,8 @@ export class MeetingMemberController {
   }
 
   @Get('/signout/:meetingid/:id')
+  @UseGuards(AuthGuard('jwt'))
+  @UseGuards(RoleGuard)
   async signOut(
     @Param('id') id: string,
     @Param('meetingid') meetingid: string,
@@ -68,6 +81,8 @@ export class MeetingMemberController {
   }
 
   @Delete('/:meetingid/:id')
+  @UseGuards(AuthGuard('jwt'))
+  @UseGuards(RoleGuard)
   async remove(@Param('id') id: string, @Param('meetingid') meetingid: string) {
     const res = await this.meetingMemberService.remove(id, meetingid);
     return res.affectedRows > 0

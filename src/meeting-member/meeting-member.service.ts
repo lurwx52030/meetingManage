@@ -117,7 +117,8 @@ export class MeetingMemberService {
     }
     exceptions.splice(0, exceptions.length);
 
-    const current = new Date(2023, 6, 7, 15, 50);
+    //TODO: 後面記得替換成當前日期
+    const current = new Date(2023, 6, 7, 15, 40);
     if (current < meeting.start) {
       throw new HttpException('會議尚未開始', HttpStatus.NOT_ACCEPTABLE);
     }
