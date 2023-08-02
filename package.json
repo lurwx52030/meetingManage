@@ -34,6 +34,7 @@
     "@types/cron": "^2.0.1",
     "@types/js-yaml": "^4.0.5",
     "@types/luxon": "^3.3.0",
+    "@types/multer": "^1.4.7",
     "@types/passport-jwt": "^3.0.8",
     "casbin": "^5.26.1",
     "class-transformer": "^0.5.1",

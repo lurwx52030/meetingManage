@@ -17,6 +17,7 @@ import { RoleModule } from './role/role.module';
 import dbConfig from './config/db.config';
 import { join } from 'path';
 import { MeetingMemberModule } from './meeting-member/meeting-member.module';
+import { MulterModule } from '@nestjs/platform-express';
 
 @Module({
   imports: [
@@ -25,20 +26,21 @@ import { MeetingMemberModule } from './meeting-member/meeting-member.module';
     ScheduleModule.forRoot(),
     UserModule,
     AuthModule,
+    MeetingModule,
     MettingRoomModule,
     MeetingroomBorrowModule,
+    MeetingMemberModule,
     TypeOrmModule.forRootAsync({
       imports: [ConfigModule],
       inject: [ConfigService],
       useFactory: dbConfig('mysql'),
     }),
-    MeetingModule,
     RoleModule.register({
       modelPath: join(__dirname, '../casbin/model.conf'),
       policyAdapter: join(__dirname, '../casbin/policy.csv'),
       global: true,
     }),
-    MeetingMemberModule,
+    MulterModule.register({ dest: join(__dirname, '..', 'uploads') }),
   ],
   controllers: [AppController],
   providers: [AppService, ScheduleService],
