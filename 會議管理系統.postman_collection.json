@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "7be23927-1543-47d3-9159-329a36bc65c4",
+		"_postman_id": "a03a725e-e4c9-485d-ba7a-3e66086c41e4",
 		"name": "會議管理系統",
 		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
 		"_exporter_id": "14870945"
@@ -86,6 +86,21 @@
 						"url": "localhost:3000/auth/login"
 					},
 					"response": []
+				},
+				{
+					"name": "localhost:3000/user/A124",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IkExMjUiLCJhY2NvdW50IjoienhjdiIsInJvbGUiOiJhZG1pbiIsImlhdCI6MTY4OTY5OTA5MywiZXhwIjoxNjg5Njk5NjkzfQ.wZDfN1qcqNSABWMIRc9JKEOxwmCZMCkst_JMg4E6DNQ"
+							}
+						},
+						"method": "GET",
+						"header": [],
+						"url": "localhost:3000/user/A124"
+					},
+					"response": []
 				}
 			]
 		},
@@ -98,11 +113,17 @@
 						{
 							"name": "localhost:3000/meeting-member",
 							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": {
+										"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IkExMjQiLCJhY2NvdW50IjoiYXNkZmdoIiwicm9sZSI6ImVtcGxveWVlIiwiaWF0IjoxNjkwOTEzNjAzLCJleHAiOjE2OTA5MTQyMDN9.-9MLGPqtZYb8AzI4iv02L6jlNz0K-cbtZrn0Mw17n1M"
+									}
+								},
 								"method": "POST",
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\r\n    \"meetingId\": \"M044\",\r\n    \"employeeId\": \"A124\"\r\n}",
+									"raw": "{\r\n    \"meetingId\": \"M030\",\r\n    \"employeeId\": \"A124\"\r\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -116,9 +137,15 @@
 						{
 							"name": "localhost:3000/meeting-member/meeting/M030",
 							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": {
+										"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IkExMjQiLCJhY2NvdW50IjoiYXNkZmdoIiwicm9sZSI6ImVtcGxveWVlIiwiaWF0IjoxNjkwOTEyMjk4LCJleHAiOjE2OTA5MTI4OTh9.77IzAY7QGjQSWCf5tSdfJnWezsLGWEK-KuZdlTeF1x4"
+									}
+								},
 								"method": "GET",
 								"header": [],
-								"url": "localhost:3000/meeting-member/"
+								"url": "localhost:3000/meeting-member"
 							},
 							"response": []
 						},
@@ -134,15 +161,27 @@
 						{
 							"name": "localhost:3000/meeting-member/11",
 							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": {
+										"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IkExMjQiLCJhY2NvdW50IjoiYXNkZmdoIiwicm9sZSI6ImVtcGxveWVlIiwiaWF0IjoxNjkwOTEzNjAzLCJleHAiOjE2OTA5MTQyMDN9.-9MLGPqtZYb8AzI4iv02L6jlNz0K-cbtZrn0Mw17n1M"
+									}
+								},
 								"method": "DELETE",
 								"header": [],
-								"url": "localhost:3000/meeting-member/M044/A124"
+								"url": "localhost:3000/meeting-member/M030/A124"
 							},
 							"response": []
 						},
 						{
 							"name": "簽到",
 							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": {
+										"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IkExMjQiLCJhY2NvdW50IjoiYXNkZmdoIiwicm9sZSI6ImVtcGxveWVlIiwiaWF0IjoxNjkwOTEzMjYzLCJleHAiOjE2OTA5MTM4NjN9.VESCboNiuA8wemS8m2jspPWOAEDTk_IFDb0CxvVuoMA"
+									}
+								},
 								"method": "GET",
 								"header": [],
 								"url": "localhost:3000/meeting-member/signin/M044/A124"
@@ -152,9 +191,66 @@
 						{
 							"name": "簽退",
 							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": {
+										"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IkExMjQiLCJhY2NvdW50IjoiYXNkZmdoIiwicm9sZSI6ImVtcGxveWVlIiwiaWF0IjoxNjkwOTEzMjYzLCJleHAiOjE2OTA5MTM4NjN9.VESCboNiuA8wemS8m2jspPWOAEDTk_IFDb0CxvVuoMA"
+									}
+								},
 								"method": "GET",
 								"header": [],
 								"url": "localhost:3000/meeting-member/signout/M044/A124"
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "檔案上傳",
+					"item": [
+						{
+							"name": "localhost:3000/meeting-file/M030",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "file",
+											"type": "file",
+											"src": []
+										}
+									]
+								},
+								"url": "localhost:3000/meeting-file/M030"
+							},
+							"response": []
+						},
+						{
+							"name": "localhost:3000/meeting-file/download/M030-jsFuncDecorator.js",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": "localhost:3000/meeting-file/download/M030-jsFuncDecorator.js"
+							},
+							"response": []
+						},
+						{
+							"name": "localhost:3000/meeting-file/M030",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": "localhost:3000/meeting-file/M030"
+							},
+							"response": []
+						},
+						{
+							"name": "localhost:3000/meeting-file/M030-jsFuncDecorator.js",
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": "localhost:3000/meeting-file/M030-jsFuncDecorator.js"
 							},
 							"response": []
 						}

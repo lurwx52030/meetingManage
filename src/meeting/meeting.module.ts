@@ -15,5 +15,6 @@ import { JwtService } from '@nestjs/jwt';
     TypeOrmModule.forFeature([Meeting, meetingSequence, MeetingRoom, User]),
   ],
   providers: [MeetingService, MeetingRoomService, JwtService],
+  exports: [MeetingService],
 })
 export class MeetingModule {}

@@ -18,6 +18,9 @@ import dbConfig from './config/db.config';
 import { join } from 'path';
 import { MeetingMemberModule } from './meeting-member/meeting-member.module';
 import { MulterModule } from '@nestjs/platform-express';
+import { MeetingFileModule } from './meeting-file/meeting-file.module';
+import { diskStorage } from 'multer';
+import { MulterHelper } from './common/multerHelper';
 
 @Module({
   imports: [
@@ -40,7 +43,13 @@ import { MulterModule } from '@nestjs/platform-express';
       policyAdapter: join(__dirname, '../casbin/policy.csv'),
       global: true,
     }),
-    MulterModule.register({ dest: join(__dirname, '..', 'uploads') }),
+    MulterModule.register({
+      storage: diskStorage({
+        destination: MulterHelper.destination,
+        filename: MulterHelper.filenameHandler,
+      }),
+    }),
+    MeetingFileModule,
   ],
   controllers: [AppController],
   providers: [AppService, ScheduleService],
