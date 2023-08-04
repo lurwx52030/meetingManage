@@ -11,6 +11,7 @@ import {
   HttpStatus,
   UseInterceptors,
   UploadedFiles,
+  UseGuards,
 } from '@nestjs/common';
 import { MeetingFileService } from './meeting-file.service';
 import { CreateMeetingFileDto } from './dto/create-meeting-file.dto';
@@ -20,6 +21,8 @@ import * as fs from 'fs';
 import { FilesInterceptor } from '@nestjs/platform-express';
 import { MeetingService } from 'src/meeting/meeting.service';
 import { Result } from 'src/common/standardResult';
+import { AuthGuard } from '@nestjs/passport';
+import { RoleGuard } from 'src/role/role.guard';
 
 @Controller('meeting-file')
 export class MeetingFileController {
@@ -30,6 +33,8 @@ export class MeetingFileController {
 
   @Post('/:meetingId')
   @UseInterceptors(FilesInterceptor('file'))
+  @UseGuards(AuthGuard('jwt'))
+  @UseGuards(RoleGuard)
   async create(
     @Param('meetingId') meetingId: string,
     @UploadedFiles() files: Express.Multer.File[],
@@ -46,6 +51,8 @@ export class MeetingFileController {
   }
 
   @Get('/:meetingId')
+  @UseGuards(AuthGuard('jwt'))
+  @UseGuards(RoleGuard)
   getFileList(@Param('meetingId') meetingId: string) {
     const path = join(__dirname, '../../', 'uploads');
     try {
@@ -61,6 +68,8 @@ export class MeetingFileController {
   }
 
   @Get('/download/:path')
+  @UseGuards(AuthGuard('jwt'))
+  @UseGuards(RoleGuard)
   downloadSingleFile(@Param('path') path: string) {
     const fullPath = join(__dirname, '../../', 'uploads', path);
     if (!fs.existsSync(fullPath)) {
@@ -71,6 +80,8 @@ export class MeetingFileController {
   }
 
   @Delete('/:path')
+  @UseGuards(AuthGuard('jwt'))
+  @UseGuards(RoleGuard)
   remove(@Param('path') path: string) {
     const fullPath = join(__dirname, '../../', 'uploads', path);
     if (!fs.existsSync(fullPath)) {

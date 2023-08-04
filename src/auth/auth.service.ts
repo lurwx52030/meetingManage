@@ -1,4 +1,9 @@
-import { Injectable } from '@nestjs/common';
+import {
+  HttpException,
+  HttpStatus,
+  Injectable,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { encryptBySalt } from 'src/common/encryptBySalt';
 import { UserService } from 'src/user/user.service';
@@ -20,10 +25,10 @@ export class AuthService {
       if (user.password == hash) {
         return user;
       } else {
-        return null;
+        throw new HttpException('密碼錯誤', HttpStatus.UNAUTHORIZED);
       }
     } else {
-      return null;
+      throw new HttpException('找不到帳號', HttpStatus.NOT_FOUND);
     }
   }
 
