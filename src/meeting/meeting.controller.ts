@@ -15,6 +15,7 @@ import { UpdateMeetingDto } from './dto/update-meeting.dto';
 import { Result } from 'src/common/standardResult';
 import { AuthGuard } from '@nestjs/passport';
 import { RoleGuard } from 'src/role/role.guard';
+import { SchedulerRegistry } from '@nestjs/schedule';
 
 @Controller('meeting')
 export class MeetingController {
@@ -69,5 +70,21 @@ export class MeetingController {
     return res.affected > 0
       ? Result.ok(null, '刪除成功')
       : Result.fail(204, '刪除失敗');
+  }
+
+  @Get('/checkin/:id/:status')
+  @UseGuards(AuthGuard('jwt'))
+  @UseGuards(RoleGuard)
+  async checkin(@Param('id') id: string, @Param('status') status: number) {
+    const res = await this.meetingService.Checkinstatus(id, +status);
+    return Result.ok(null, `已${res ? '開啟' : '關閉'}簽到`);
+  }
+
+  @Get('/checkout/:id/:status')
+  @UseGuards(AuthGuard('jwt'))
+  @UseGuards(RoleGuard)
+  async checkout(@Param('id') id: string, @Param('status') status: number) {
+    const res = await this.meetingService.Checkoutstatus(id, +status);
+    return Result.ok(null, `已${res ? '開啟' : '關閉'}簽退`);
   }
 }

@@ -31,4 +31,13 @@ export class Meeting {
     type: 'datetime',
   })
   end: Date;
+
+  @Column({ name: 'isCheckin', type: 'bool', default: false })
+  isCheckin: boolean;
+
+  @Column({ name: 'checkLimit', type: 'int', default: 5 })
+  checkLimit: number;
+
+  @Column({ name: 'isCheckout', type: 'bool', default: false })
+  isCheckout: boolean;
 }

@@ -202,6 +202,36 @@
 								"url": "localhost:3000/meeting-member/signout/M044/A124"
 							},
 							"response": []
+						},
+						{
+							"name": "簽到開啟/關閉",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": {
+										"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IkExMjQiLCJhY2NvdW50IjoiYXNkZmdoIiwicm9sZSI6ImVtcGxveWVlIiwiaWF0IjoxNjkxNjkzODY2LCJleHAiOjE2OTE2OTQ0NjZ9.8Fq4QvhbeFXF7IebNGKYqrT4NpnDXiMsycwMlT7U6nY"
+									}
+								},
+								"method": "GET",
+								"header": [],
+								"url": "localhost:3000/meeting/checkin/M030/1"
+							},
+							"response": []
+						},
+						{
+							"name": "簽退開啟/關閉",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": {
+										"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IkExMjQiLCJhY2NvdW50IjoiYXNkZmdoIiwicm9sZSI6ImVtcGxveWVlIiwiaWF0IjoxNjkxNjkzNTk1LCJleHAiOjE2OTE2OTQxOTV9.8CtW5K0Gtb8MO-FrfkSkXO2S1rqwHjYNet9bIYhzqac"
+									}
+								},
+								"method": "GET",
+								"header": [],
+								"url": "localhost:3000/meeting/checkout/M030/1"
+							},
+							"response": []
 						}
 					]
 				},
@@ -211,6 +241,12 @@
 						{
 							"name": "localhost:3000/meeting-file/M030",
 							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": {
+										"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IkExMjQiLCJhY2NvdW50IjoiYXNkZmdoIiwicm9sZSI6ImVtcGxveWVlIiwiaWF0IjoxNjkxMTQ4NTAyLCJleHAiOjE2OTExNDkxMDJ9.3rkUQL3wgKHcSp9iD-k68jD88fHZvGT16Rijpl3-bY0"
+									}
+								},
 								"method": "POST",
 								"header": [],
 								"body": {
@@ -219,7 +255,7 @@
 										{
 											"key": "file",
 											"type": "file",
-											"src": []
+											"src": "/D:/source-codes/jsFuncDecorator.js"
 										}
 									]
 								},
@@ -230,6 +266,12 @@
 						{
 							"name": "localhost:3000/meeting-file/download/M030-jsFuncDecorator.js",
 							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": {
+										"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IkExMjQiLCJhY2NvdW50IjoiYXNkZmdoIiwicm9sZSI6ImVtcGxveWVlIiwiaWF0IjoxNjkxMTQ4NTAyLCJleHAiOjE2OTExNDkxMDJ9.3rkUQL3wgKHcSp9iD-k68jD88fHZvGT16Rijpl3-bY0"
+									}
+								},
 								"method": "GET",
 								"header": [],
 								"url": "localhost:3000/meeting-file/download/M030-jsFuncDecorator.js"
@@ -239,6 +281,12 @@
 						{
 							"name": "localhost:3000/meeting-file/M030",
 							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": {
+										"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IkExMjQiLCJhY2NvdW50IjoiYXNkZmdoIiwicm9sZSI6ImVtcGxveWVlIiwiaWF0IjoxNjkxMTUzMTg3LCJleHAiOjE2OTExNTM3ODd9.8jZ2hJcjUrGbIEVernAYGxlEncv7OBhXN5qY_fnuUuM"
+									}
+								},
 								"method": "GET",
 								"header": [],
 								"url": "localhost:3000/meeting-file/M030"

@@ -112,13 +112,22 @@ export class MeetingMemberService {
       );
     }
 
+    if (isSignIn && !meeting.isCheckin) {
+      throw new HttpException('尚未開始簽到', HttpStatus.NOT_ACCEPTABLE);
+    }
+
+    if (!isSignIn && !meeting.isCheckout) {
+      throw new HttpException('尚未開始簽退', HttpStatus.NOT_ACCEPTABLE);
+    }
+
     if (exceptions.length !== 0) {
       throw new MultiHttpException(exceptions);
     }
     exceptions.splice(0, exceptions.length);
 
     //TODO: 後面記得替換成當前日期
-    const current = new Date(2023, 6, 7, 15, 40);
+    const current = new Date(2023, 6, 7, 19, 25);
+
     if (current < meeting.start) {
       throw new HttpException('會議尚未開始', HttpStatus.NOT_ACCEPTABLE);
     }

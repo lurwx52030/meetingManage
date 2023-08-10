@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- 主機： localhost:3306
--- 產生時間： 2023-08-03 19:25:18
+-- 產生時間： 2023-08-10 19:07:21
 -- 伺服器版本： 5.7.24
 -- PHP 版本： 8.1.0
 
@@ -29,28 +29,29 @@ USE `meeting_manage`;
 -- 資料表結構 `meeting`
 --
 
-DROP TABLE IF EXISTS `meeting`;
 CREATE TABLE `meeting` (
   `id` varchar(255) NOT NULL,
   `name` varchar(255) NOT NULL,
   `start` datetime NOT NULL,
   `end` datetime NOT NULL,
   `meetingRoomId` varchar(255) DEFAULT NULL,
-  `creatorId` varchar(255) DEFAULT NULL
+  `creatorId` varchar(255) DEFAULT NULL,
+  `isCheckin` tinyint(4) NOT NULL DEFAULT '0',
+  `checkLimit` int(11) NOT NULL DEFAULT '5',
+  `isCheckout` tinyint(4) NOT NULL DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- 傾印資料表的資料 `meeting`
 --
 
-INSERT INTO `meeting` (`id`, `name`, `start`, `end`, `meetingRoomId`, `creatorId`) VALUES
-('M030', 'asd', '2023-07-07 18:30:00', '2023-07-07 19:30:00', 'A001', 'A124'),
-('M044', 'asd', '2023-07-07 15:30:00', '2023-07-07 16:30:00', 'A001', 'A124');
+INSERT INTO `meeting` (`id`, `name`, `start`, `end`, `meetingRoomId`, `creatorId`, `isCheckin`, `checkLimit`, `isCheckout`) VALUES
+('M030', 'asd', '2023-07-07 18:30:00', '2023-07-07 19:30:00', 'A001', 'A124', 0, 1, 0),
+('M044', 'asd', '2023-07-07 15:30:00', '2023-07-07 16:30:00', 'A001', 'A124', 0, 5, 0);
 
 --
 -- 觸發器 `meeting`
 --
-DROP TRIGGER IF EXISTS `meetingroomAutoId`;
 DELIMITER $$
 CREATE TRIGGER `meetingroomAutoId` BEFORE INSERT ON `meeting` FOR EACH ROW BEGIN
     INSERT INTO meeting_sequence VALUES (NULL);
@@ -65,7 +66,6 @@ DELIMITER ;
 -- 資料表結構 `meetingroom_borrow`
 --
 
-DROP TABLE IF EXISTS `meetingroom_borrow`;
 CREATE TABLE `meetingroom_borrow` (
   `id` int(11) NOT NULL,
   `start` datetime NOT NULL,
@@ -79,7 +79,6 @@ CREATE TABLE `meetingroom_borrow` (
 -- 資料表結構 `meeting_member`
 --
 
-DROP TABLE IF EXISTS `meeting_member`;
 CREATE TABLE `meeting_member` (
   `id` int(11) NOT NULL,
   `participantId` varchar(255) DEFAULT NULL,
@@ -93,7 +92,7 @@ CREATE TABLE `meeting_member` (
 --
 
 INSERT INTO `meeting_member` (`id`, `participantId`, `meetingId`, `singin`, `singout`) VALUES
-(9, 'A124', 'M044', '2023-07-07 15:40:00', '2023-07-07 15:40:00');
+(10, 'A124', 'M030', '2023-07-07 18:45:00', '2023-07-07 19:25:00');
 
 -- --------------------------------------------------------
 
@@ -101,7 +100,6 @@ INSERT INTO `meeting_member` (`id`, `participantId`, `meetingId`, `singin`, `sin
 -- 資料表結構 `meeting_room`
 --
 
-DROP TABLE IF EXISTS `meeting_room`;
 CREATE TABLE `meeting_room` (
   `id` varchar(255) NOT NULL,
   `name` varchar(15) NOT NULL COMMENT '會議室名稱',
@@ -122,7 +120,6 @@ INSERT INTO `meeting_room` (`id`, `name`, `location`) VALUES
 -- 資料表結構 `meeting_sequence`
 --
 
-DROP TABLE IF EXISTS `meeting_sequence`;
 CREATE TABLE `meeting_sequence` (
   `id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -184,7 +181,6 @@ INSERT INTO `meeting_sequence` (`id`) VALUES
 -- 資料表結構 `user`
 --
 
-DROP TABLE IF EXISTS `user`;
 CREATE TABLE `user` (
   `id` varchar(255) NOT NULL,
   `name` varchar(15) NOT NULL COMMENT '姓名',

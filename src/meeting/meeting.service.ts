@@ -9,6 +9,7 @@ import { Not, Repository, getConnection } from 'typeorm';
 import { plainToClass } from 'class-transformer';
 import { User } from 'src/user/entities/user.entity';
 import isTimeOverlap from 'src/common/isTimeOverlap';
+import { SchedulerRegistry } from '@nestjs/schedule';
 
 @Injectable()
 export class MeetingService {
@@ -23,6 +24,7 @@ export class MeetingService {
 
     @InjectRepository(User)
     private userRepository: Repository<User>,
+    private readonly schedulerRegistry: SchedulerRegistry,
   ) {}
 
   async create(data: CreateMeetingDto) {
@@ -137,10 +139,45 @@ export class MeetingService {
     meeting.creator = creator;
     meeting.start = newBorrowStart;
     meeting.end = newBorrowEnd;
-    return this.meetingRepository.update(meegingId, meeting);
+    return await this.meetingRepository.update(meegingId, meeting);
   }
 
-  remove(id: string) {
-    return this.meetingRepository.delete(id);
+  async remove(id: string) {
+    return await this.meetingRepository.delete(id);
+  }
+
+  async Checkinstatus(id: string, state: number) {
+    const meeting = await this.meetingRepository.findOne({ where: { id } });
+    meeting.isCheckin = state === 1;
+    console.log(typeof state);
+    const updateRes = await this.meetingRepository.update(id, meeting);
+    if (updateRes.affected > 0) {
+      //自動關閉簽到
+      // 1min=60000ms
+      const timeout = setTimeout(async () => {
+        meeting.isCheckin = false;
+        await this.meetingRepository.update(id, meeting);
+      }, meeting.checkLimit * 60000);
+      this.schedulerRegistry.addTimeout('endCheckin', timeout);
+
+      return meeting.isCheckin;
+    }
+  }
+
+  async Checkoutstatus(id: string, state: number) {
+    const meeting = await this.meetingRepository.findOne({ where: { id } });
+    meeting.isCheckout = state === 1;
+    const updateRes = await this.meetingRepository.update(id, meeting);
+    if (updateRes.affected > 0) {
+      //自動關閉簽退
+      // 1min=60000ms
+      const timeout = setTimeout(async () => {
+        meeting.isCheckout = false;
+        await this.meetingRepository.update(id, meeting);
+      }, meeting.checkLimit * 60000);
+      this.schedulerRegistry.addTimeout('endCheckout', timeout);
+
+      return meeting.isCheckout;
+    }
   }
 }

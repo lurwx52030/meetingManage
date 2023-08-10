@@ -5,6 +5,8 @@ p, role:employee, /user/:id, read
 
 p, role:employee, /meeting, *
 p, role:employee, /meeting/:id, *
+p, role:employee, /meeting/checkin/:id/:status, *
+p, role:employee, /meeting/checkout/:id/:status, *
 
 p, role:employee, /meeting-room, *
 p, role:employee, /meeting-room/:id, *
