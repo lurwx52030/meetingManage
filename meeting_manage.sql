@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- 主機： localhost:3306
--- 產生時間： 2023-08-10 19:07:21
+-- 產生時間： 2023-08-11 17:44:43
 -- 伺服器版本： 5.7.24
 -- PHP 版本： 8.1.0
 
@@ -38,16 +38,18 @@ CREATE TABLE `meeting` (
   `creatorId` varchar(255) DEFAULT NULL,
   `isCheckin` tinyint(4) NOT NULL DEFAULT '0',
   `checkLimit` int(11) NOT NULL DEFAULT '5',
-  `isCheckout` tinyint(4) NOT NULL DEFAULT '0'
+  `isCheckout` tinyint(4) NOT NULL DEFAULT '0',
+  `notificationTime` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- 傾印資料表的資料 `meeting`
 --
 
-INSERT INTO `meeting` (`id`, `name`, `start`, `end`, `meetingRoomId`, `creatorId`, `isCheckin`, `checkLimit`, `isCheckout`) VALUES
-('M030', 'asd', '2023-07-07 18:30:00', '2023-07-07 19:30:00', 'A001', 'A124', 0, 1, 0),
-('M044', 'asd', '2023-07-07 15:30:00', '2023-07-07 16:30:00', 'A001', 'A124', 0, 5, 0);
+INSERT INTO `meeting` (`id`, `name`, `start`, `end`, `meetingRoomId`, `creatorId`, `isCheckin`, `checkLimit`, `isCheckout`, `notificationTime`) VALUES
+('M030', 'zzzz', '2022-07-07 18:25:00', '2022-07-07 19:25:00', 'A001', 'A124', 0, 1, 0, 15),
+('M044', 'zzzz', '2022-07-07 15:30:00', '2022-07-07 16:25:00', 'A001', 'A124', 0, 5, 0, 45),
+('M046', 'asd', '2023-07-08 15:30:00', '2023-07-08 17:30:00', 'A001', 'A124', 0, 5, 0, 10);
 
 --
 -- 觸發器 `meeting`
@@ -173,7 +175,9 @@ INSERT INTO `meeting_sequence` (`id`) VALUES
 (42),
 (43),
 (44),
-(45);
+(45),
+(46),
+(47);
 
 -- --------------------------------------------------------
 
@@ -265,7 +269,7 @@ ALTER TABLE `meeting_member`
 -- 使用資料表自動遞增(AUTO_INCREMENT) `meeting_sequence`
 --
 ALTER TABLE `meeting_sequence`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=46;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=48;
 
 --
 -- 已傾印資料表的限制式

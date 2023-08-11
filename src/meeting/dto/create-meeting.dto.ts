@@ -1,4 +1,4 @@
-import { IsDateString, IsNotEmpty, IsString } from 'class-validator';
+import { IsDateString, IsNotEmpty, IsNumber, IsString } from 'class-validator';
 
 export class CreateMeetingDto {
   // @IsNotEmpty()
@@ -24,4 +24,7 @@ export class CreateMeetingDto {
   @IsNotEmpty()
   @IsDateString()
   end: Date;
+
+  @IsNumber()
+  notificationTime: number;
 }

@@ -311,10 +311,10 @@
 							"listen": "prerequest",
 							"script": {
 								"exec": [
-									"let start = new Date(2023,6,7,15,30);\r",
+									"let start = new Date(2023,6,8,15,30);\r",
 									"postman.setEnvironmentVariable(\"start\", start.toISOString())\r",
 									"\r",
-									"let end = new Date(2023,6,7,20,30);\r",
+									"let end = new Date(2023,6,8,17,30);\r",
 									"postman.setEnvironmentVariable(\"end\", end.toISOString())"
 								],
 								"type": "text/javascript"
@@ -322,11 +322,17 @@
 						}
 					],
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IkExMjQiLCJhY2NvdW50IjoiYXNkZmdoIiwicm9sZSI6ImVtcGxveWVlIiwiaWF0IjoxNjkxNzc1NDMwLCJleHAiOjE2OTE3NzYwMzB9.dGzKqFp8LTRZ43_YVBhyn7bAZQXoMQPdTkD9c1iwFnw"
+							}
+						},
 						"method": "POST",
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"name\": \"asd\",\r\n    \"meetingRoomId\":\"A001\",\r\n    \"creatorId\":\"A124\",\r\n    \"start\": \"{{start}}\",\r\n    \"end\": \"{{end}}\"\r\n}",
+							"raw": "{\r\n    \"name\": \"asd\",\r\n    \"meetingRoomId\":\"A001\",\r\n    \"creatorId\":\"A124\",\r\n    \"start\": \"{{start}}\",\r\n    \"end\": \"{{end}}\",\r\n    \"notificationTime\":10\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -344,10 +350,10 @@
 							"listen": "prerequest",
 							"script": {
 								"exec": [
-									"let start = new Date(2022,6,7,18,25);\r",
+									"let start = new Date(2022,6,7,15,30);\r",
 									"postman.setEnvironmentVariable(\"start\", start.toISOString())\r",
 									"\r",
-									"let end = new Date(2022,6,7,19,25);\r",
+									"let end = new Date(2022,6,7,16,25);\r",
 									"postman.setEnvironmentVariable(\"end\", end.toISOString())"
 								],
 								"type": "text/javascript"
@@ -355,18 +361,24 @@
 						}
 					],
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IkExMjQiLCJhY2NvdW50IjoiYXNkZmdoIiwicm9sZSI6ImVtcGxveWVlIiwiaWF0IjoxNjkxNzc1NjQ4LCJleHAiOjE2OTE3NzYyNDh9.2kTVIDeYAs-SgkxmWGCznUa1nh_bIwAJbLd_qxWr01o"
+							}
+						},
 						"method": "PUT",
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"name\": \"zzzz\",\r\n    \"meetingRoomId\":\"A001\",\r\n    \"creatorId\":\"A124\",\r\n    \"start\": \"{{start}}\",\r\n    \"end\": \"{{end}}\"\r\n}",
+							"raw": "{\r\n    \"name\": \"zzzz\",\r\n    \"meetingRoomId\":\"A001\",\r\n    \"creatorId\":\"A124\",\r\n    \"start\": \"{{start}}\",\r\n    \"end\": \"{{end}}\",\r\n    \"notificationTime\":45\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
 								}
 							}
 						},
-						"url": "localhost:3000/meeting/M034"
+						"url": "localhost:3000/meeting/M044"
 					},
 					"response": []
 				},

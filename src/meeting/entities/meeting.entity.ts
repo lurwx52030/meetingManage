@@ -40,4 +40,7 @@ export class Meeting {
 
   @Column({ name: 'isCheckout', type: 'bool', default: false })
   isCheckout: boolean;
+
+  @Column({ name: 'notificationTime', type: 'int', nullable: true })
+  notificationTime: number;
 }
