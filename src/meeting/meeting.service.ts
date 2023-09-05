@@ -1,15 +1,15 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
-import { CreateMeetingDto } from './dto/create-meeting.dto';
-import { UpdateMeetingDto } from './dto/update-meeting.dto';
+import { SchedulerRegistry } from '@nestjs/schedule';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Meeting } from './entities/meeting.entity';
+import { plainToClass } from 'class-transformer';
+import isTimeOverlap from 'src/common/isTimeOverlap';
 import { MeetingRoom } from 'src/meeting-room/entities/metting-room.entity';
 import { MeetingRoomService } from 'src/meeting-room/meeting-room.service';
-import { Not, Repository, getConnection } from 'typeorm';
-import { plainToClass } from 'class-transformer';
 import { User } from 'src/user/entities/user.entity';
-import isTimeOverlap from 'src/common/isTimeOverlap';
-import { SchedulerRegistry } from '@nestjs/schedule';
+import { Not, Repository } from 'typeorm';
+import { CreateMeetingDto } from './dto/create-meeting.dto';
+import { UpdateMeetingDto } from './dto/update-meeting.dto';
+import { Meeting } from './entities/meeting.entity';
 
 @Injectable()
 export class MeetingService {
@@ -81,17 +81,27 @@ export class MeetingService {
   }
 
   async findAll() {
-    return await this.meetingRepository.find();
+    return await this.meetingRepository.query(
+      `SELECT meeting.*,meeting_room.name as meetingRoom 
+       FROM meeting 
+       JOIN meeting_room ON meeting.meetingRoomId=meeting_room.id`,
+    );
   }
 
   async findOne(id: string) {
-    return await this.meetingRepository.find({ where: { id } });
+    return await this.meetingRepository.query(
+      `SELECT meeting.*,meeting_room.name as meetingRoom 
+       FROM meeting 
+       JOIN meeting_room ON meeting.meetingRoomId=meeting_room.id 
+       WHERE meeting.id=?;`,
+      [id],
+    );
   }
 
   async update(meegingId: string, data: UpdateMeetingDto) {
     const meetingRoom = (
       await this.MeetingRoomService.getMeetingRoombyId(data.meetingRoomId)
-    ).data[0];
+    )[0];
     if (meetingRoom === null) {
       throw new HttpException('此會議室不存在', HttpStatus.NOT_ACCEPTABLE);
     }
