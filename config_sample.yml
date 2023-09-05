@@ -1,5 +1,7 @@
 environment: 'development'
 
+cors: true
+
 linebot:
   channelAccessToken: 'Your channelAccessToken'
   channelSecret: 'Your channelSecret'
