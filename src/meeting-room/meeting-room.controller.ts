@@ -1,58 +1,59 @@
 import {
-  Controller,
-  Get,
-  Post,
   Body,
-  Param,
+  Controller,
   Delete,
+  Get,
+  Param,
+  Post,
   Put,
   UseGuards,
 } from '@nestjs/common';
-import { MeetingRoomService } from './meeting-room.service';
+import { AuthGuard } from '@nestjs/passport';
+import { Result } from 'src/common/standardResult';
+import { RoleGuard } from 'src/role/role.guard';
 import { CreateMeetingRoomDto } from './dto/create-meeting-room.dto';
 import { UpdateMeetingRoomDto } from './dto/update-meeting-room.dto';
-import { AuthGuard } from '@nestjs/passport';
-import { RoleGuard } from 'src/role/role.guard';
+import { MeetingRoomService } from './meeting-room.service';
 
 @Controller('meeting-room')
+@UseGuards(AuthGuard('jwt'))
+@UseGuards(RoleGuard)
 export class MettingRoomController {
   constructor(private readonly MeetingRoomService: MeetingRoomService) {}
 
-  @UseGuards(AuthGuard('jwt'))
-  @UseGuards(RoleGuard)
   @Post()
-  create(@Body() createMettingRoomDto: CreateMeetingRoomDto) {
-    return this.MeetingRoomService.create(createMettingRoomDto);
+  async create(@Body() createMettingRoomDto: CreateMeetingRoomDto) {
+    return Result.ok(
+      await this.MeetingRoomService.create(createMettingRoomDto),
+    );
   }
 
-  @UseGuards(AuthGuard('jwt'))
-  @UseGuards(RoleGuard)
   @Get()
-  findAll() {
-    return this.MeetingRoomService.findAll();
+  async findAll() {
+    return Result.ok(await this.MeetingRoomService.findAll());
   }
 
-  @UseGuards(AuthGuard('jwt'))
-  @UseGuards(RoleGuard)
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.MeetingRoomService.getMeetingRoombyId(id);
+  async findOne(@Param('id') id: string) {
+    return Result.ok(await this.MeetingRoomService.getMeetingRoombyId(id));
   }
 
-  @UseGuards(AuthGuard('jwt'))
-  @UseGuards(RoleGuard)
   @Put(':id')
-  update(
+  async update(
     @Param('id') id: string,
     @Body() updateMeetingRoomDto: UpdateMeetingRoomDto,
   ) {
-    return this.MeetingRoomService.update(id, updateMeetingRoomDto);
+    const res = await this.MeetingRoomService.update(id, updateMeetingRoomDto);
+    return res.affected >= 1
+      ? Result.ok(null, '修改成功')
+      : Result.fail(null, '修改失敗');
   }
 
-  @UseGuards(AuthGuard('jwt'))
-  @UseGuards(RoleGuard)
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.MeetingRoomService.remove(id);
+  async remove(@Param('id') id: string) {
+    const res = await this.MeetingRoomService.remove(id);
+    return res.affected >= 1
+      ? Result.ok(null, '刪除成功')
+      : Result.fail(null, '刪除失敗');
   }
 }
