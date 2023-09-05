@@ -10,7 +10,7 @@
 			"name": "使用者",
 			"item": [
 				{
-					"name": "localhost:3000/user",
+					"name": "localhost:5000/user",
 					"request": {
 						"auth": {
 							"type": "bearer",
@@ -20,12 +20,12 @@
 						},
 						"method": "GET",
 						"header": [],
-						"url": "localhost:3000/user"
+						"url": "localhost:5000/user"
 					},
 					"response": []
 				},
 				{
-					"name": "localhost:3000/user/A124",
+					"name": "localhost:5000/user/A124",
 					"request": {
 						"method": "PUT",
 						"header": [],
@@ -38,16 +38,16 @@
 								}
 							}
 						},
-						"url": "localhost:3000/user/A124"
+						"url": "localhost:5000/user/A124"
 					},
 					"response": []
 				},
 				{
-					"name": "localhost:3000/user/A124",
+					"name": "localhost:5000/user/A124",
 					"request": {
 						"method": "DELETE",
 						"header": [],
-						"url": "localhost:3000/user/A124"
+						"url": "localhost:5000/user/A124"
 					},
 					"response": []
 				},
@@ -65,7 +65,7 @@
 								}
 							}
 						},
-						"url": "localhost:3000/auth/register"
+						"url": "localhost:5000/auth/register"
 					},
 					"response": []
 				},
@@ -83,12 +83,12 @@
 								}
 							}
 						},
-						"url": "localhost:3000/auth/login"
+						"url": "localhost:5000/auth/login"
 					},
 					"response": []
 				},
 				{
-					"name": "localhost:3000/user/A124",
+					"name": "localhost:5000/user/A124",
 					"request": {
 						"auth": {
 							"type": "bearer",
@@ -98,7 +98,7 @@
 						},
 						"method": "GET",
 						"header": [],
-						"url": "localhost:3000/user/A124"
+						"url": "localhost:5000/user/A124"
 					},
 					"response": []
 				}
@@ -111,7 +111,7 @@
 					"name": "參與者",
 					"item": [
 						{
-							"name": "localhost:3000/meeting-member",
+							"name": "localhost:5000/meeting-member",
 							"request": {
 								"auth": {
 									"type": "bearer",
@@ -130,12 +130,12 @@
 										}
 									}
 								},
-								"url": "localhost:3000/meeting-member"
+								"url": "localhost:5000/meeting-member"
 							},
 							"response": []
 						},
 						{
-							"name": "localhost:3000/meeting-member/meeting/M030",
+							"name": "localhost:5000/meeting-member/meeting/M030",
 							"request": {
 								"auth": {
 									"type": "bearer",
@@ -145,21 +145,21 @@
 								},
 								"method": "GET",
 								"header": [],
-								"url": "localhost:3000/meeting-member"
+								"url": "localhost:5000/meeting-member"
 							},
 							"response": []
 						},
 						{
-							"name": "localhost:3000/meeting-member/meeting/M030",
+							"name": "localhost:5000/meeting-member/meeting/M030",
 							"request": {
 								"method": "GET",
 								"header": [],
-								"url": "localhost:3000/meeting-member/meeting/M030"
+								"url": "localhost:5000/meeting-member/meeting/M030"
 							},
 							"response": []
 						},
 						{
-							"name": "localhost:3000/meeting-member/11",
+							"name": "localhost:5000/meeting-member/11",
 							"request": {
 								"auth": {
 									"type": "bearer",
@@ -169,7 +169,7 @@
 								},
 								"method": "DELETE",
 								"header": [],
-								"url": "localhost:3000/meeting-member/M030/A124"
+								"url": "localhost:5000/meeting-member/M030/A124"
 							},
 							"response": []
 						},
@@ -184,7 +184,7 @@
 								},
 								"method": "GET",
 								"header": [],
-								"url": "localhost:3000/meeting-member/signin/M044/A124"
+								"url": "localhost:5000/meeting-member/signin/M044/A124"
 							},
 							"response": []
 						},
@@ -199,7 +199,7 @@
 								},
 								"method": "GET",
 								"header": [],
-								"url": "localhost:3000/meeting-member/signout/M044/A124"
+								"url": "localhost:5000/meeting-member/signout/M044/A124"
 							},
 							"response": []
 						},
@@ -214,7 +214,7 @@
 								},
 								"method": "GET",
 								"header": [],
-								"url": "localhost:3000/meeting/checkin/M030/1"
+								"url": "localhost:5000/meeting/checkin/M030/1"
 							},
 							"response": []
 						},
@@ -229,7 +229,7 @@
 								},
 								"method": "GET",
 								"header": [],
-								"url": "localhost:3000/meeting/checkout/M030/1"
+								"url": "localhost:5000/meeting/checkout/M030/1"
 							},
 							"response": []
 						}
@@ -239,7 +239,7 @@
 					"name": "檔案上傳",
 					"item": [
 						{
-							"name": "localhost:3000/meeting-file/M030",
+							"name": "localhost:5000/meeting-file/M030",
 							"request": {
 								"auth": {
 									"type": "bearer",
@@ -259,12 +259,12 @@
 										}
 									]
 								},
-								"url": "localhost:3000/meeting-file/M030"
+								"url": "localhost:5000/meeting-file/M030"
 							},
 							"response": []
 						},
 						{
-							"name": "localhost:3000/meeting-file/download/M030-jsFuncDecorator.js",
+							"name": "localhost:5000/meeting-file/download/M030-jsFuncDecorator.js",
 							"request": {
 								"auth": {
 									"type": "bearer",
@@ -274,12 +274,12 @@
 								},
 								"method": "GET",
 								"header": [],
-								"url": "localhost:3000/meeting-file/download/M030-jsFuncDecorator.js"
+								"url": "localhost:5000/meeting-file/download/M030-jsFuncDecorator.js"
 							},
 							"response": []
 						},
 						{
-							"name": "localhost:3000/meeting-file/M030",
+							"name": "localhost:5000/meeting-file/M030",
 							"request": {
 								"auth": {
 									"type": "bearer",
@@ -289,23 +289,23 @@
 								},
 								"method": "GET",
 								"header": [],
-								"url": "localhost:3000/meeting-file/M030"
+								"url": "localhost:5000/meeting-file/M030"
 							},
 							"response": []
 						},
 						{
-							"name": "localhost:3000/meeting-file/M030-jsFuncDecorator.js",
+							"name": "localhost:5000/meeting-file/M030-jsFuncDecorator.js",
 							"request": {
 								"method": "DELETE",
 								"header": [],
-								"url": "localhost:3000/meeting-file/M030-jsFuncDecorator.js"
+								"url": "localhost:5000/meeting-file/M030-jsFuncDecorator.js"
 							},
 							"response": []
 						}
 					]
 				},
 				{
-					"name": "localhost:3000/meeting",
+					"name": "localhost:5000/meeting",
 					"event": [
 						{
 							"listen": "prerequest",
@@ -339,12 +339,12 @@
 								}
 							}
 						},
-						"url": "localhost:3000/meeting"
+						"url": "localhost:5000/meeting"
 					},
 					"response": []
 				},
 				{
-					"name": "localhost:3000/meeting",
+					"name": "localhost:5000/meeting",
 					"event": [
 						{
 							"listen": "prerequest",
@@ -378,25 +378,25 @@
 								}
 							}
 						},
-						"url": "localhost:3000/meeting/M044"
+						"url": "localhost:5000/meeting/M044"
 					},
 					"response": []
 				},
 				{
-					"name": "localhost:3000/meeting",
+					"name": "localhost:5000/meeting",
 					"request": {
 						"method": "GET",
 						"header": [],
-						"url": "localhost:3000/meeting"
+						"url": "localhost:5000/meeting"
 					},
 					"response": []
 				},
 				{
-					"name": "localhost:3000/meeting/M012",
+					"name": "localhost:5000/meeting/M012",
 					"request": {
 						"method": "DELETE",
 						"header": [],
-						"url": "localhost:3000/meeting/M012"
+						"url": "localhost:5000/meeting/M012"
 					},
 					"response": []
 				}
@@ -406,7 +406,7 @@
 			"name": "會議室",
 			"item": [
 				{
-					"name": "localhost:3000/meeting-room",
+					"name": "localhost:5000/meeting-room",
 					"request": {
 						"method": "POST",
 						"header": [],
@@ -419,21 +419,21 @@
 								}
 							}
 						},
-						"url": "localhost:3000/meeting-room"
+						"url": "localhost:5000/meeting-room"
 					},
 					"response": []
 				},
 				{
-					"name": "localhost:3000/meeting-room/A00",
+					"name": "localhost:5000/meeting-room/A00",
 					"request": {
 						"method": "DELETE",
 						"header": [],
-						"url": "localhost:3000/meeting-room/A00"
+						"url": "localhost:5000/meeting-room/A00"
 					},
 					"response": []
 				},
 				{
-					"name": "localhost:3000/meeting-room/A003",
+					"name": "localhost:5000/meeting-room/A003",
 					"request": {
 						"method": "PUT",
 						"header": [],
@@ -446,16 +446,16 @@
 								}
 							}
 						},
-						"url": "localhost:3000/meeting-room/A003"
+						"url": "localhost:5000/meeting-room/A003"
 					},
 					"response": []
 				},
 				{
-					"name": "localhost:3000/meeting-room",
+					"name": "localhost:5000/meeting-room",
 					"request": {
 						"method": "GET",
 						"header": [],
-						"url": "localhost:3000/meeting-room"
+						"url": "localhost:5000/meeting-room"
 					},
 					"response": []
 				}
@@ -465,7 +465,7 @@
 			"name": "會議室借用",
 			"item": [
 				{
-					"name": "localhost:3000/meetingroom-borrow",
+					"name": "localhost:5000/meetingroom-borrow",
 					"event": [
 						{
 							"listen": "prerequest",
@@ -493,7 +493,7 @@
 								}
 							}
 						},
-						"url": "localhost:3000/meetingroom-borrow"
+						"url": "localhost:5000/meetingroom-borrow"
 					},
 					"response": []
 				}
