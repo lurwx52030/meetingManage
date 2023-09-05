@@ -13,7 +13,7 @@
 打開postman，導入`會議管理系統.postman_collection.json`collection，裡面有api的範例，關於登入也可以參考`login_example.py`，預先開了兩支帳號，一隻帳號管理員，一隻帳號一般使用者，帳號密碼在`測試帳號.csv`
 
 - postman：一個拿來測API的工具
-- 關於CORS：https://blog.yowko.com/postman-collection-runner/
+- 關於postman collection：https://blog.yowko.com/postman-collection-runner/
 ## reference
 - https://typeorm.bootcss.com/
 - https://github.com/nestjs/nest-cli/issues/323
