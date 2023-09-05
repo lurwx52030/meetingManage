@@ -2,12 +2,15 @@
 ## 資料庫設定
 1. 打開phpmyadmin，導入`meeting_manage.sql`
 2. 將`config_sample.yml`改成`config.yml`，把資料庫的帳號密碼跟linebot相關的token換成自己的
+## Cross-Origin Resource Sharing (CORS)
+`config.yml`中有一個名為cors的設定項，`true`為開啟，`false`為關閉
+
+- 關於CORS：https://www.shubo.io/what-is-cors/
 ## 啟動程式
 1. 利用`npm i`安裝dependencies
 2. 利用`npm run debug`啟動程式
 ## postman collection
 打開postman，導入`會議管理系統.postman_collection.json`collection，裡面有api的範例，關於登入也可以參考`login_example.py`，預先開了兩支帳號，一隻帳號管理員，一隻帳號一般使用者，帳號密碼在`測試帳號.csv`
-
 ## reference
 - https://typeorm.bootcss.com/
 - https://github.com/nestjs/nest-cli/issues/323
