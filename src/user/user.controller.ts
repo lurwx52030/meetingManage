@@ -3,10 +3,15 @@ import {
   Controller,
   Delete,
   Get,
+  HttpException,
+  HttpStatus,
   Param,
   Put,
+  Request,
   UseGuards,
 } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
+import { JwtService } from '@nestjs/jwt';
 import { AuthGuard } from '@nestjs/passport';
 import { Result } from 'src/common/standardResult';
 import { RoleGuard } from 'src/role/role.guard';
@@ -17,7 +22,11 @@ import { UserService } from './user.service';
 @UseGuards(AuthGuard('jwt'))
 @UseGuards(RoleGuard)
 export class UserController {
-  constructor(private userService: UserService) {}
+  constructor(
+    private readonly userService: UserService,
+    private readonly jwtService: JwtService,
+    private readonly configService: ConfigService,
+  ) {}
 
   @Get()
   async getUsers() {
@@ -31,15 +40,32 @@ export class UserController {
   }
 
   @Get(':id')
-  //TODO: 依據權限來給資料，admin可以取得任意employee，employee只能拿自己的
-  async getUser(@Param('id') id: string) {
-    const user = await this.userService.getUserById(id);
-    user.data = user.data.map((data) => {
-      delete data.salt;
-      delete data.password;
-      return data;
+  async getUser(@Request() req, @Param('id') id: string) {
+    const jwtToken = (req.headers['authorization'] as string).replace(
+      'Bearer ',
+      '',
+    );
+    const reqUser = this.jwtService.verify(jwtToken, {
+      secret: this.configService.get('jwt.secret'),
     });
-    return Result.ok(user.data, '查詢成功');
+
+    let user = await this.userService.getUserById(id);
+    if (user instanceof Array && user.length == 1) {
+      user = user[0];
+      delete user.salt;
+      delete user.password;
+    }
+
+    // console.log(reqUser['role']);
+    if (reqUser['role'] === 'employee') {
+      if (reqUser['id'] !== user.id) {
+        throw new HttpException(
+          '只開放一般員工查詢自己的資料！',
+          HttpStatus.UNAUTHORIZED,
+        );
+      }
+    }
+    return Result.ok(user, '查詢成功');
   }
 
   @Put(':id')
