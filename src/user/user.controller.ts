@@ -22,16 +22,24 @@ export class UserController {
   @Get()
   async getUsers() {
     const user = await this.userService.getAllUsers();
-    const { password, salt, ...others } = user.data;
-    return Result.ok(others, '查詢成功');
+    user.data = user.data.map((data) => {
+      delete data.salt;
+      delete data.password;
+      return data;
+    });
+    return Result.ok(user.data, '查詢成功');
   }
 
   @Get(':id')
   //TODO: 依據權限來給資料，admin可以取得任意employee，employee只能拿自己的
   async getUser(@Param('id') id: string) {
     const user = await this.userService.getUserById(id);
-    const { password, salt, ...others } = user.data;
-    return Result.ok(others, '查詢成功');
+    user.data = user.data.map((data) => {
+      delete data.salt;
+      delete data.password;
+      return data;
+    });
+    return Result.ok(user.data, '查詢成功');
   }
 
   @Put(':id')
