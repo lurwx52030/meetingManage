@@ -29,9 +29,12 @@ export class UserService {
     return Result.ok(newUser, '註冊成功');
   }
 
-  async getUserById(userId: string): Promise<Result> {
-    const res = await this.userRepository.findOne({ where: { id: userId } });
-    return Result.ok(res);
+  async getUserById(userId: string) {
+    const res = await this.userRepository.query(
+      'select * from user where id=?',
+      [userId],
+    );
+    return res;
   }
 
   async getAllUsers(): Promise<Result> {
