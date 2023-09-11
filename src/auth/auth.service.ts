@@ -1,14 +1,9 @@
-import {
-  HttpException,
-  HttpStatus,
-  Injectable,
-  UnauthorizedException,
-} from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
 import { encryptBySalt } from 'src/common/encryptBySalt';
-import { UserService } from 'src/user/user.service';
 import { User } from 'src/user/entities/user.entity';
-import { ConfigService } from '@nestjs/config';
+import { UserService } from 'src/user/user.service';
 
 @Injectable()
 export class AuthService {
@@ -19,7 +14,7 @@ export class AuthService {
   ) {}
 
   async validateUser(account: string, password: string) {
-    const user = (await this.userService.getUserByAccount(account)).data;
+    const user = await this.userService.getUserByAccount(account);
     if (user !== null) {
       const { hash } = encryptBySalt(password, user.salt);
       if (user.password == hash) {
