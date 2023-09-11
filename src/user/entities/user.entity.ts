@@ -1,13 +1,7 @@
 import { Exclude } from 'class-transformer';
 import { MeetingMember } from 'src/meeting-member/entities/meeting-member.entity';
 import { Meeting } from 'src/meeting/entities/meeting.entity';
-import {
-  Entity,
-  Column,
-  PrimaryGeneratedColumn,
-  PrimaryColumn,
-  OneToMany,
-} from 'typeorm';
+import { Column, Entity, OneToMany, PrimaryColumn } from 'typeorm';
 
 export enum UserRole {
   ADMIN = 'admin',
@@ -30,7 +24,6 @@ export class User {
     nullable: false,
     comment: '帳號',
     length: 20,
-    unique: true,
   })
   account: string;
 

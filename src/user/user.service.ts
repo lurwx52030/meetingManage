@@ -15,9 +15,10 @@ export class UserService {
     private userRepository: Repository<User>,
   ) {}
 
-  async create(user: CreateUserDto): Promise<Result> {
+  async create(user: CreateUserDto) {
     const existing = await this.getUserById(user.id);
-    if (existing.data) {
+    console.log(existing);
+    if (existing instanceof Array && existing.length >= 1) {
       throw new HttpException('此員工已存在', HttpStatus.NOT_ACCEPTABLE);
     }
 
@@ -26,7 +27,7 @@ export class UserService {
 
     const hashUser = plainToClass(User, { ...user, password: hash, salt });
     const newUser = await this.userRepository.save(hashUser);
-    return Result.ok(newUser, '註冊成功');
+    return newUser;
   }
 
   async getUserById(userId: string) {
@@ -37,33 +38,41 @@ export class UserService {
     return res;
   }
 
-  async getAllUsers(): Promise<Result> {
-    return Result.ok(await this.userRepository.find());
+  async getEmployeeById(userId: string) {
+    const res = await this.userRepository.query(
+      'select * from user where role="employee" and id=?',
+      [userId],
+    );
+    return res;
   }
 
-  async getUserByAccount(account: string): Promise<Result> {
+  async getAllUsers() {
+    return await this.userRepository.find();
+  }
+
+  async getUserByAccount(account: string) {
     const res = await this.userRepository.findOne({
       where: { account: account },
     });
-    return Result.ok(res);
+    return res;
   }
 
   async update(id: string, user: UpdateUserDto) {
     //檢查是否存在此員工
     const existing = await this.getUserById(id);
-    if (!existing.data) {
+    if (!existing) {
       throw new HttpException('此員工不存在', HttpStatus.NOT_ACCEPTABLE);
     }
 
     //密碼加鹽並hash
     const { hash, salt } = encryptBySalt(user.password);
 
-    const newUser = await this.userRepository.update(id, {
+    const res = await this.userRepository.update(id, {
       ...user,
       password: hash,
       salt,
     });
-    return Result.ok(newUser, '修改成功');
+    return res;
   }
 
   async remove(id: string) {
