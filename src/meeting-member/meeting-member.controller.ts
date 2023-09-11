@@ -48,7 +48,7 @@ export class MeetingMemberController {
     if (res.affected > 0) {
       return Result.ok(null, '簽到成功');
     } else {
-      return Result.ok(null, '簽到失敗');
+      return Result.fail(204, '簽到失敗');
     }
   }
 
@@ -65,7 +65,7 @@ export class MeetingMemberController {
     if (res.affected > 0) {
       return Result.ok(null, '簽退成功');
     } else {
-      return Result.ok(null, '簽退失敗');
+      return Result.fail(204, '簽退失敗');
     }
   }
 

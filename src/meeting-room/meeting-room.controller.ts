@@ -46,7 +46,7 @@ export class MettingRoomController {
     const res = await this.MeetingRoomService.update(id, updateMeetingRoomDto);
     return res.affected >= 1
       ? Result.ok(null, '修改成功')
-      : Result.fail(null, '修改失敗');
+      : Result.fail(204, '修改失敗');
   }
 
   @Delete(':id')
@@ -54,6 +54,6 @@ export class MettingRoomController {
     const res = await this.MeetingRoomService.remove(id);
     return res.affected >= 1
       ? Result.ok(null, '刪除成功')
-      : Result.fail(null, '刪除失敗');
+      : Result.fail(204, '刪除失敗');
   }
 }

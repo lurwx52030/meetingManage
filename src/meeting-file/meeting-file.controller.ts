@@ -81,7 +81,7 @@ export class MeetingFileController {
       fs.unlinkSync(fullPath);
       return Result.ok(null, '刪除成功');
     } catch (error) {
-      return Result.fail(null, '刪除失敗');
+      return Result.fail(204, '刪除失敗');
     }
   }
 }
