@@ -30,17 +30,17 @@ export class UserController {
 
   @Get()
   async getUsers() {
-    const user = await this.userService.getAllUsers();
-    user.data = user.data.map((data) => {
+    let users = await this.userService.getAllUsers();
+    users = users.map((data) => {
       delete data.salt;
       delete data.password;
       return data;
     });
-    return Result.ok(user.data, '查詢成功');
+    return Result.ok(users, '查詢成功');
   }
 
   @Get(':id')
-  async getUser(@Request() req, @Param('id') id: string) {
+  async getUser(@Request() req: Request, @Param('id') id: string) {
     const jwtToken = (req.headers['authorization'] as string).replace(
       'Bearer ',
       '',
@@ -48,15 +48,20 @@ export class UserController {
     const reqUser = this.jwtService.verify(jwtToken, {
       secret: this.configService.get('jwt.secret'),
     });
+    // console.log(reqUser['role']);
 
-    let user = await this.userService.getUserById(id);
+    let user = await this.userService.getEmployeeById(id);
+
+    if (reqUser['role'] == 'admin' && reqUser['id'] === id) {
+      user = await this.userService.getUserById(id);
+    }
+
     if (user instanceof Array && user.length == 1) {
       user = user[0];
       delete user.salt;
       delete user.password;
     }
 
-    // console.log(reqUser['role']);
     if (reqUser['role'] === 'employee') {
       if (reqUser['id'] !== user.id) {
         throw new HttpException(
@@ -69,8 +74,31 @@ export class UserController {
   }
 
   @Put(':id')
-  update(@Param('id') id: string, @Body() updateMettingRoomDto: UpdateUserDto) {
-    return this.userService.update(id, updateMettingRoomDto);
+  async update(
+    @Request() req: Request,
+    @Param('id') id: string,
+    @Body() updateMettingRoomDto: UpdateUserDto,
+  ) {
+    const jwtToken = (req.headers['authorization'] as string).replace(
+      'Bearer ',
+      '',
+    );
+    const reqUser = this.jwtService.verify(jwtToken, {
+      secret: this.configService.get('jwt.secret'),
+    });
+
+    if (reqUser['role'] === 'employee') {
+      if (reqUser['id'] !== id) {
+        throw new HttpException('無權修改別人的資料!', HttpStatus.UNAUTHORIZED);
+      }
+    }
+
+    const res = await this.userService.update(id, updateMettingRoomDto);
+    if (res.affected > 0) {
+      return Result.ok(null, '修改成功');
+    } else {
+      return Result.fail(204, '修改失敗');
+    }
   }
 
   @Delete(':id')
