@@ -2,13 +2,13 @@ import { ApiResponseProperty } from '@nestjs/swagger';
 
 export class Result {
   constructor(code = 0, msg?: string, data?: any) {
-    this.code = code;
+    this.status = code;
     this.msg = msg || 'ok';
     this.data = data || null;
   }
 
   @ApiResponseProperty({ type: 'number' })
-  code: number;
+  status: number;
 
   @ApiResponseProperty({ type: 'string' })
   msg?: string;
