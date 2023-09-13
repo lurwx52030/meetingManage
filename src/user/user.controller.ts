@@ -15,6 +15,7 @@ import { JwtService } from '@nestjs/jwt';
 import { AuthGuard } from '@nestjs/passport';
 import { Result } from 'src/common/standardResult';
 import { RoleGuard } from 'src/role/role.guard';
+import { UpdatePasswordDto } from './dto/update-password.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { UserService } from './user.service';
 
@@ -41,7 +42,13 @@ export class UserController {
 
   @Get(':id')
   async getUser(@Request() req: Request, @Param('id') id: string) {
-    let user = await this.userService.getEmployeeById(id);
+    let result = await this.userService.getEmployeeById(id);
+    if (result instanceof Array && result.length == 1) {
+      result = result[0];
+      delete result.salt;
+      delete result.password;
+    }
+
     if (req.headers['authorization'] !== undefined) {
       const jwtToken = (req.headers['authorization'] as string).replace(
         'Bearer ',
@@ -53,17 +60,11 @@ export class UserController {
       // console.log(reqUser['role']);
 
       if (reqUser['role'] == 'admin' && reqUser['id'] === id) {
-        user = await this.userService.getUserById(id);
-      }
-
-      if (user instanceof Array && user.length == 1) {
-        user = user[0];
-        delete user.salt;
-        delete user.password;
+        result = await this.userService.getUserById(id);
       }
 
       if (reqUser['role'] === 'employee') {
-        if (reqUser['id'] !== user.id) {
+        if (reqUser['id'] !== result.id) {
           throw new HttpException(
             '只開放一般員工查詢自己的資料！',
             HttpStatus.UNAUTHORIZED,
@@ -71,14 +72,14 @@ export class UserController {
         }
       }
     }
-    return Result.ok(user, '查詢成功');
+    return Result.ok(result, '查詢成功');
   }
 
   @Put(':id')
   async update(
     @Request() req: Request,
     @Param('id') id: string,
-    @Body() updateMettingRoomDto: UpdateUserDto,
+    @Body() updateUserDto: UpdateUserDto,
   ) {
     if (req.headers['authorization'] !== undefined) {
       const jwtToken = (req.headers['authorization'] as string).replace(
@@ -99,7 +100,40 @@ export class UserController {
       }
     }
 
-    const res = await this.userService.update(id, updateMettingRoomDto);
+    const res = await this.userService.update(id, updateUserDto);
+    if (res.affected > 0) {
+      return Result.ok(null, '修改成功');
+    } else {
+      return Result.fail(204, '修改失敗');
+    }
+  }
+
+  @Put('password/:id')
+  async updatePassword(
+    @Request() req: Request,
+    @Param('id') id: string,
+    @Body() updatePasswordDto: UpdatePasswordDto,
+  ) {
+    if (req.headers['authorization'] !== undefined) {
+      const jwtToken = (req.headers['authorization'] as string).replace(
+        'Bearer ',
+        '',
+      );
+      const reqUser = this.jwtService.verify(jwtToken, {
+        secret: this.configService.get('jwt.secret'),
+      });
+
+      if (reqUser['role'] === 'employee') {
+        if (reqUser['id'] !== id) {
+          throw new HttpException(
+            '無權修改別人的密碼!',
+            HttpStatus.UNAUTHORIZED,
+          );
+        }
+      }
+    }
+
+    const res = await this.userService.updatePassWord(id, updatePasswordDto);
     if (res.affected > 0) {
       return Result.ok(null, '修改成功');
     } else {

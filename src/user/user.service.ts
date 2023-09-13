@@ -5,6 +5,7 @@ import { encryptBySalt } from 'src/common/encryptBySalt';
 import { Result } from 'src/common/standardResult';
 import { Repository } from 'typeorm';
 import { CreateUserDto } from './dto/create-user.dto';
+import { UpdatePasswordDto } from './dto/update-password.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { User } from './entities/user.entity';
 
@@ -68,7 +69,7 @@ export class UserService {
     //檢查是否存在此員工
     const existingEmployee = await this.getUserById(id);
     if (existingEmployee instanceof Array && existingEmployee.length < 1) {
-      throw new HttpException('此員工已存在', HttpStatus.NOT_ACCEPTABLE);
+      throw new HttpException('此員工不存在', HttpStatus.NOT_ACCEPTABLE);
     }
 
     //檢查帳號是否被使用
@@ -78,10 +79,26 @@ export class UserService {
     }
 
     //密碼加鹽並hash
-    const { hash, salt } = encryptBySalt(user.password);
+    // const { hash, salt } = encryptBySalt(user.password);
 
     const res = await this.userRepository.update(id, {
       ...user,
+      // password: hash,
+      // salt,
+    });
+    return res;
+  }
+
+  async updatePassWord(id: string, pwd: UpdatePasswordDto) {
+    const existingEmployee = await this.getUserById(id);
+    if (existingEmployee instanceof Array && existingEmployee.length < 1) {
+      throw new HttpException('此員工不存在', HttpStatus.NOT_ACCEPTABLE);
+    }
+
+    //密碼加鹽並hash
+    const { hash, salt } = encryptBySalt(pwd.password);
+
+    const res = await this.userRepository.update(id, {
       password: hash,
       salt,
     });
