@@ -41,33 +41,34 @@ export class UserController {
 
   @Get(':id')
   async getUser(@Request() req: Request, @Param('id') id: string) {
-    const jwtToken = (req.headers['authorization'] as string).replace(
-      'Bearer ',
-      '',
-    );
-    const reqUser = this.jwtService.verify(jwtToken, {
-      secret: this.configService.get('jwt.secret'),
-    });
-    // console.log(reqUser['role']);
-
     let user = await this.userService.getEmployeeById(id);
+    if (req.headers['authorization'] !== undefined) {
+      const jwtToken = (req.headers['authorization'] as string).replace(
+        'Bearer ',
+        '',
+      );
+      const reqUser = this.jwtService.verify(jwtToken, {
+        secret: this.configService.get('jwt.secret'),
+      });
+      // console.log(reqUser['role']);
 
-    if (reqUser['role'] == 'admin' && reqUser['id'] === id) {
-      user = await this.userService.getUserById(id);
-    }
+      if (reqUser['role'] == 'admin' && reqUser['id'] === id) {
+        user = await this.userService.getUserById(id);
+      }
 
-    if (user instanceof Array && user.length == 1) {
-      user = user[0];
-      delete user.salt;
-      delete user.password;
-    }
+      if (user instanceof Array && user.length == 1) {
+        user = user[0];
+        delete user.salt;
+        delete user.password;
+      }
 
-    if (reqUser['role'] === 'employee') {
-      if (reqUser['id'] !== user.id) {
-        throw new HttpException(
-          '只開放一般員工查詢自己的資料！',
-          HttpStatus.UNAUTHORIZED,
-        );
+      if (reqUser['role'] === 'employee') {
+        if (reqUser['id'] !== user.id) {
+          throw new HttpException(
+            '只開放一般員工查詢自己的資料！',
+            HttpStatus.UNAUTHORIZED,
+          );
+        }
       }
     }
     return Result.ok(user, '查詢成功');
@@ -79,17 +80,22 @@ export class UserController {
     @Param('id') id: string,
     @Body() updateMettingRoomDto: UpdateUserDto,
   ) {
-    const jwtToken = (req.headers['authorization'] as string).replace(
-      'Bearer ',
-      '',
-    );
-    const reqUser = this.jwtService.verify(jwtToken, {
-      secret: this.configService.get('jwt.secret'),
-    });
+    if (req.headers['authorization'] !== undefined) {
+      const jwtToken = (req.headers['authorization'] as string).replace(
+        'Bearer ',
+        '',
+      );
+      const reqUser = this.jwtService.verify(jwtToken, {
+        secret: this.configService.get('jwt.secret'),
+      });
 
-    if (reqUser['role'] === 'employee') {
-      if (reqUser['id'] !== id) {
-        throw new HttpException('無權修改別人的資料!', HttpStatus.UNAUTHORIZED);
+      if (reqUser['role'] === 'employee') {
+        if (reqUser['id'] !== id) {
+          throw new HttpException(
+            '無權修改別人的資料!',
+            HttpStatus.UNAUTHORIZED,
+          );
+        }
       }
     }
 

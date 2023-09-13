@@ -24,6 +24,7 @@ export class User {
     nullable: false,
     comment: '帳號',
     length: 20,
+    unique: true,
   })
   account: string;
 

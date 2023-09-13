@@ -16,10 +16,16 @@ export class UserService {
   ) {}
 
   async create(user: CreateUserDto) {
-    const existing = await this.getUserById(user.id);
-    console.log(existing);
-    if (existing instanceof Array && existing.length >= 1) {
+    //檢查是否存在此員工
+    const existingEmployee = await this.getUserById(user.id);
+    if (existingEmployee instanceof Array && existingEmployee.length >= 1) {
       throw new HttpException('此員工已存在', HttpStatus.NOT_ACCEPTABLE);
+    }
+
+    //檢查帳號是否被使用
+    const existingAccount = await this.getUserByAccount(user.account);
+    if (existingAccount instanceof Array && existingAccount.length >= 1) {
+      throw new HttpException('此帳號已被使用', HttpStatus.NOT_ACCEPTABLE);
     }
 
     //密碼加鹽並hash
@@ -40,7 +46,7 @@ export class UserService {
 
   async getEmployeeById(userId: string) {
     const res = await this.userRepository.query(
-      'select * from user where role="employee" and id=?',
+      'select * from user where id=?',
       [userId],
     );
     return res;
@@ -51,17 +57,24 @@ export class UserService {
   }
 
   async getUserByAccount(account: string) {
-    const res = await this.userRepository.findOne({
-      where: { account: account },
-    });
+    const res = await this.userRepository.query(
+      'select * from user where account=?',
+      [account],
+    );
     return res;
   }
 
   async update(id: string, user: UpdateUserDto) {
     //檢查是否存在此員工
-    const existing = await this.getUserById(id);
-    if (!existing) {
-      throw new HttpException('此員工不存在', HttpStatus.NOT_ACCEPTABLE);
+    const existingEmployee = await this.getUserById(id);
+    if (existingEmployee instanceof Array && existingEmployee.length < 1) {
+      throw new HttpException('此員工已存在', HttpStatus.NOT_ACCEPTABLE);
+    }
+
+    //檢查帳號是否被使用
+    const existingAccount = await this.getUserByAccount(user.account);
+    if (existingAccount instanceof Array && existingAccount.length >= 1) {
+      throw new HttpException('此帳號已被使用', HttpStatus.NOT_ACCEPTABLE);
     }
 
     //密碼加鹽並hash

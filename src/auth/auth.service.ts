@@ -14,10 +14,12 @@ export class AuthService {
   ) {}
 
   async validateUser(account: string, password: string) {
-    const user = await this.userService.getUserByAccount(account);
-    if (user !== null) {
+    const result = await this.userService.getUserByAccount(account);
+    if (result instanceof Array && result.length >= 1) {
+      const user = result[0];
       const { hash } = encryptBySalt(password, user.salt);
-      if (user.password == hash) {
+      console.log(user.password);
+      if (user.password === hash) {
         return user;
       } else {
         throw new HttpException('密碼錯誤', HttpStatus.UNAUTHORIZED);
