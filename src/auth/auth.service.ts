@@ -18,7 +18,6 @@ export class AuthService {
     if (result instanceof Array && result.length >= 1) {
       const user = result[0];
       const { hash } = encryptBySalt(password, user.salt);
-      console.log(user.password);
       if (user.password === hash) {
         return user;
       } else {

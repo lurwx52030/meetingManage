@@ -94,7 +94,7 @@ export class UserController {
         if (reqUser['id'] !== id) {
           throw new HttpException(
             '無權修改別人的資料!',
-            HttpStatus.UNAUTHORIZED,
+            HttpStatus.BAD_REQUEST,
           );
         }
       }

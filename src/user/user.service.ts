@@ -73,9 +73,14 @@ export class UserService {
     }
 
     //檢查帳號是否被使用
-    const existingAccount = await this.getUserByAccount(user.account);
+    let existingAccount = await this.getUserByAccount(user.account);
     if (existingAccount instanceof Array && existingAccount.length >= 1) {
-      throw new HttpException('此帳號已被使用', HttpStatus.NOT_ACCEPTABLE);
+      existingAccount = existingAccount.filter(
+        (User) => User.id !== existingEmployee[0].id,
+      );
+      if (existingAccount.length >= 1) {
+        throw new HttpException('此帳號已被使用', HttpStatus.BAD_REQUEST);
+      }
     }
 
     //密碼加鹽並hash
