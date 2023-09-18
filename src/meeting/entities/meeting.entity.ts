@@ -11,13 +11,19 @@ export class Meeting {
   @Column()
   name: string;
 
-  @ManyToOne(() => MeetingRoom, (meetingroom) => meetingroom.borrows)
+  @ManyToOne(() => MeetingRoom, (meetingroom) => meetingroom.borrows, {
+    onDelete: 'NO ACTION',
+  })
   meetingRoom: MeetingRoom;
 
-  @ManyToOne(() => User, (meetingroom) => meetingroom.meetingCreators)
+  @ManyToOne(() => User, (meetingroom) => meetingroom.meetingCreators, {
+    onDelete: 'NO ACTION',
+  })
   creator: User;
 
-  @OneToMany(() => MeetingMember, (meeting) => meeting)
+  @OneToMany(() => MeetingMember, (meeting) => meeting, {
+    onDelete: 'CASCADE',
+  })
   meetingParticipants: MeetingMember[];
 
   @Column({

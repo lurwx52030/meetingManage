@@ -35,6 +35,7 @@ export class AuthService {
       access_token: this.jwtService.sign(payload, {
         secret: this.configService.get('jwt.secret'),
       }),
+      id,
     };
   }
 }

@@ -55,9 +55,15 @@ export class User {
   })
   role: UserRole;
 
-  @OneToMany(() => Meeting, (borrow) => borrow.creator)
+  @OneToMany(() => Meeting, (borrow) => borrow.creator, {
+    onDelete: 'CASCADE',
+    onUpdate: 'CASCADE',
+  })
   meetingCreators: Meeting[];
 
-  @OneToMany(() => MeetingMember, (meeting) => meeting.participant)
+  @OneToMany(() => MeetingMember, (meeting) => meeting.participant, {
+    onDelete: 'CASCADE',
+    onUpdate: 'CASCADE',
+  })
   meetingParticipants: MeetingMember[];
 }

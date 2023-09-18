@@ -27,7 +27,7 @@ export class MeetingController {
     if (res.raw.affectedRows > 0) {
       return Result.ok(null, '新增成功');
     } else {
-      return Result.ok(null, '新增失敗');
+      return Result.fail(204, '新增失敗');
     }
   }
 

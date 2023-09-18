@@ -15,7 +15,7 @@ import { JwtService } from '@nestjs/jwt';
 import { AuthGuard } from '@nestjs/passport';
 import { Result } from 'src/common/standardResult';
 import { RoleGuard } from 'src/role/role.guard';
-import { UpdatePasswordDto } from './dto/update-password.dto';
+import { UpdateAccountDto } from './dto/update-account.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { UserService } from './user.service';
 
@@ -108,11 +108,11 @@ export class UserController {
     }
   }
 
-  @Put('password/:id')
+  @Put('account/:id')
   async updatePassword(
     @Request() req: Request,
     @Param('id') id: string,
-    @Body() updatePasswordDto: UpdatePasswordDto,
+    @Body() updatePasswordDto: UpdateAccountDto,
   ) {
     if (req.headers['authorization'] !== undefined) {
       const jwtToken = (req.headers['authorization'] as string).replace(
@@ -126,14 +126,14 @@ export class UserController {
       if (reqUser['role'] === 'employee') {
         if (reqUser['id'] !== id) {
           throw new HttpException(
-            '無權修改別人的密碼!',
+            '無權修改別人的帳號密碼!',
             HttpStatus.UNAUTHORIZED,
           );
         }
       }
     }
 
-    const res = await this.userService.updatePassWord(id, updatePasswordDto);
+    const res = await this.userService.updateAccount(id, updatePasswordDto);
     if (res.affected > 0) {
       return Result.ok(null, '修改成功');
     } else {

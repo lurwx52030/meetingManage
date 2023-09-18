@@ -7,10 +7,14 @@ export class MeetingMember {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @ManyToOne(() => User, (user) => user.meetingParticipants)
+  @ManyToOne(() => User, (user) => user.meetingParticipants, {
+    onDelete: 'NO ACTION',
+  })
   participant: User;
 
-  @ManyToOne(() => Meeting, (meeting) => meeting.meetingParticipants)
+  @ManyToOne(() => Meeting, (meeting) => meeting.meetingParticipants, {
+    onDelete: 'CASCADE',
+  })
   meeting: Meeting;
 
   @Column({

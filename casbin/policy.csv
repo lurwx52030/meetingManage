@@ -1,10 +1,10 @@
 p, role:admin, /user, *
 p, role:admin, /user/:id, *
-p, role:admin, /user/password/:id, *
+p, role:admin, /user/account/:id, *
 
 p, role:employee, /user/:id, read
 p, role:employee, /user/:id, update
-p, role:employee, /user/password/:id, *
+p, role:employee, /user/account/:id, *
 
 p, role:employee, /meeting, *
 p, role:employee, /meeting/:id, *

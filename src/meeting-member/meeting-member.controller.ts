@@ -1,21 +1,12 @@
-import {
-  Body,
-  Controller,
-  Delete,
-  Get,
-  Param,
-  Post,
-  UseGuards,
-} from '@nestjs/common';
-import { AuthGuard } from '@nestjs/passport';
+import { Body, Controller, Delete, Get, Param, Post } from '@nestjs/common';
 import { Result } from 'src/common/standardResult';
-import { RoleGuard } from 'src/role/role.guard';
+import { UpdateResult } from 'typeorm';
 import { CreateMeetingMemberDto } from './dto/create-meeting-member.dto';
 import { MeetingMemberService } from './meeting-member.service';
 
 @Controller('meeting-member')
-@UseGuards(AuthGuard('jwt'))
-@UseGuards(RoleGuard)
+// @UseGuards(AuthGuard('jwt'))
+// @UseGuards(RoleGuard)
 export class MeetingMemberController {
   constructor(private readonly meetingMemberService: MeetingMemberService) {}
 
@@ -25,7 +16,7 @@ export class MeetingMemberController {
     if (res.raw.affectedRows > 0) {
       return Result.ok(null, '新增成功');
     } else {
-      return Result.ok(null, '新增失敗');
+      return Result.fail(204, '新增失敗');
     }
   }
 
@@ -45,10 +36,10 @@ export class MeetingMemberController {
   async signIn(@Param('id') id: string, @Param('meetingid') meetingid: string) {
     const res = await this.meetingMemberService.attendance(id, meetingid, true);
     console.log(res);
-    if (res.affected > 0) {
+    if ((res as UpdateResult).affected > 0) {
       return Result.ok(null, '簽到成功');
     } else {
-      return Result.fail(204, '簽到失敗');
+      return Result.fail(204, '簽到失敗', res);
     }
   }
 
@@ -62,10 +53,10 @@ export class MeetingMemberController {
       meetingid,
       false,
     );
-    if (res.affected > 0) {
+    if ((res as UpdateResult).affected > 0) {
       return Result.ok(null, '簽退成功');
     } else {
-      return Result.fail(204, '簽退失敗');
+      return Result.fail(204, '簽退失敗', res);
     }
   }
 

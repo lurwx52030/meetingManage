@@ -1,13 +1,12 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
-import { CreateMeetingMemberDto } from './dto/create-meeting-member.dto';
-import { UpdateMeetingMemberDto } from './dto/update-meeting-member.dto';
-import { MeetingMember } from './entities/meeting-member.entity';
-import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
-import { User } from 'src/user/entities/user.entity';
-import { Meeting } from 'src/meeting/entities/meeting.entity';
 import { plainToClass } from 'class-transformer';
 import { MultiHttpException } from 'src/common/MultiHttpExceptionFilter';
+import { Meeting } from 'src/meeting/entities/meeting.entity';
+import { User } from 'src/user/entities/user.entity';
+import { Repository } from 'typeorm';
+import { CreateMeetingMemberDto } from './dto/create-meeting-member.dto';
+import { MeetingMember } from './entities/meeting-member.entity';
 
 @Injectable()
 export class MeetingMemberService {
@@ -98,32 +97,23 @@ export class MeetingMemberService {
       where: { id },
     });
     if (employee === null) {
-      exceptions.push(
-        new HttpException('此員工不存在', HttpStatus.NOT_ACCEPTABLE),
-      );
+      return { message: '此員工不存在', status: HttpStatus.NOT_ACCEPTABLE };
     }
 
     const meeting = await this.meetingRepository.findOne({
       where: { id: meetingid },
     });
     if (meeting === null) {
-      exceptions.push(
-        new HttpException('此會議不存在', HttpStatus.NOT_ACCEPTABLE),
-      );
+      return { message: '此會議不存在', status: HttpStatus.NOT_ACCEPTABLE };
     }
 
     if (isSignIn && !meeting.isCheckin) {
-      throw new HttpException('尚未開始簽到', HttpStatus.NOT_ACCEPTABLE);
+      return { message: '尚未開始簽到', status: HttpStatus.NOT_ACCEPTABLE };
     }
 
     if (!isSignIn && !meeting.isCheckout) {
-      throw new HttpException('尚未開始簽退', HttpStatus.NOT_ACCEPTABLE);
+      return { message: '尚未開始簽退', status: HttpStatus.NOT_ACCEPTABLE };
     }
-
-    if (exceptions.length !== 0) {
-      throw new MultiHttpException(exceptions);
-    }
-    exceptions.splice(0, exceptions.length);
 
     //TODO: 後面記得替換成當前日期
     const current = new Date(2023, 6, 7, 19, 25);
