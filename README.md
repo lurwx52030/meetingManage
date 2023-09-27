@@ -1,6 +1,6 @@
 # meetingManage_Backend
 ## 資料庫設定
-1. 打開phpmyadmin，導入`meeting_manage.sql`
+1. 打開phpmyadmin，導入`db/dbSQL/meeting_manage.sql`
 2. 將`config_sample.yml`改成`config.yml`，把資料庫的帳號密碼跟linebot相關的token換成自己的
 ## Cross-Origin Resource Sharing (CORS)
 `config.yml`中有一個名為cors的設定項，`true`為開啟，`false`為關閉
