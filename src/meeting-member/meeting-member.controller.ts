@@ -28,7 +28,7 @@ export class MeetingMemberController {
 
   @Get('/meeting/:id')
   async findOne(@Param('id') id: string) {
-    const res = await this.meetingMemberService.findOneByMeeting(id);
+    const res = await this.meetingMemberService.findByMeeting(id);
     return Result.ok(res, '查詢成功');
   }
 

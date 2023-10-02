@@ -1,7 +1,6 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { plainToClass } from 'class-transformer';
-import { MultiHttpException } from 'src/common/MultiHttpExceptionFilter';
 import { Meeting } from 'src/meeting/entities/meeting.entity';
 import { User } from 'src/user/entities/user.entity';
 import { Repository } from 'typeorm';
@@ -28,18 +27,14 @@ export class MeetingMemberService {
       where: { id: data.employeeId },
     });
     if (employee === null) {
-      exceptions.push(
-        new HttpException('此員工不存在', HttpStatus.NOT_ACCEPTABLE),
-      );
+      throw new HttpException('此員工不存在', HttpStatus.NOT_ACCEPTABLE);
     }
 
     const meeting = await this.meetingRepository.findOne({
       where: { id: data.meetingId },
     });
     if (meeting === null) {
-      exceptions.push(
-        new HttpException('此會議不存在', HttpStatus.NOT_ACCEPTABLE),
-      );
+      throw new HttpException('此會議不存在', HttpStatus.NOT_ACCEPTABLE);
     }
 
     console.log(data.meetingId, data.employeeId);
@@ -52,15 +47,8 @@ export class MeetingMemberService {
       })
       .getMany();
     if (exists.length !== 0) {
-      exceptions.push(
-        new HttpException('此員工已參與此會議', HttpStatus.NOT_ACCEPTABLE),
-      );
+      throw new HttpException('此員工已參與此會議', HttpStatus.NOT_ACCEPTABLE);
     }
-
-    if (exceptions.length !== 0) {
-      throw new MultiHttpException(exceptions);
-    }
-    exceptions.splice(0, exceptions.length);
 
     const meetingMember = plainToClass(MeetingMember, { ...data });
     meetingMember.meeting = meeting;
@@ -75,9 +63,9 @@ export class MeetingMemberService {
     );
   }
 
-  async findOneByMeeting(id: string) {
+  async findByMeeting(id: string) {
     return await this.meetingMemberRepository.query(
-      'SELECT * FROM `meeting_member` WHERE meetingId=?',
+      'SELECT user.id,user.name,singin,singout FROM `meeting_member` JOIN user ON user.id=participantId WHERE meetingId=?',
       [id],
     );
   }

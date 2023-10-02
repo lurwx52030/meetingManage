@@ -11,6 +11,7 @@ import {
   UseGuards,
   UseInterceptors,
 } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
 import { AuthGuard } from '@nestjs/passport';
 import { FilesInterceptor } from '@nestjs/platform-express';
 import * as fs from 'fs';
@@ -27,6 +28,7 @@ export class MeetingFileController {
   constructor(
     private readonly meetingFileService: MeetingFileService,
     private readonly meetingService: MeetingService,
+    private readonly configService: ConfigService,
   ) {}
 
   @Post('/:meetingId')
@@ -47,11 +49,15 @@ export class MeetingFileController {
   }
 
   @Get('/:meetingId')
-  getFileList(@Param('meetingId') meetingId: string) {
+  getDownloadList(@Param('meetingId') meetingId: string) {
     const path = join(__dirname, '../../', 'uploads');
     try {
       const files = fs.readdirSync(path);
-      const matchingFiles = files.filter((file) => file.includes(meetingId));
+      console.log(this.configService.get('domain'));
+      const matchingFiles = files
+        .filter((file) => file.includes(meetingId))
+        .map((file) => `http://localhost:5000/meeting-file/download/${file}`);
+      console.log(matchingFiles);
       return matchingFiles;
     } catch (err) {
       throw new HttpException(
