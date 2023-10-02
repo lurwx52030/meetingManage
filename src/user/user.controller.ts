@@ -40,6 +40,12 @@ export class UserController {
     return Result.ok(users, '查詢成功');
   }
 
+  @Get('employee')
+  async getEmployees() {
+    const employee = await this.userService.getAllEmployees();
+    return Result.ok(employee, '查詢成功');
+  }
+
   @Get(':id')
   async getUser(@Request() req: Request, @Param('id') id: string) {
     let result = await this.userService.getEmployeeById(id);

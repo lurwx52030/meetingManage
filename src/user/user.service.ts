@@ -37,6 +37,16 @@ export class UserService {
     return newUser;
   }
 
+  async getAllUsers() {
+    return await this.userRepository.find();
+  }
+
+  async getAllEmployees() {
+    return await this.userRepository.query(
+      "SELECT id,name,role FROM `user` WHERE role='employee';",
+    );
+  }
+
   async getUserById(userId: string) {
     const res = await this.userRepository.query(
       'select * from user where id=?',
@@ -51,10 +61,6 @@ export class UserService {
       [userId],
     );
     return res;
-  }
-
-  async getAllUsers() {
-    return await this.userRepository.find();
   }
 
   async getUserByAccount(account: string) {
