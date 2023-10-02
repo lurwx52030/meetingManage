@@ -8,7 +8,7 @@ export class MeetingMember {
   id: number;
 
   @ManyToOne(() => User, (user) => user.meetingParticipants, {
-    onDelete: 'NO ACTION',
+    onDelete: 'CASCADE',
   })
   participant: User;
 

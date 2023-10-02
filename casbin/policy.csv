@@ -1,8 +1,10 @@
 p, role:admin, /user, *
+p, role:admin, /user/employee, *
 p, role:admin, /user/:id, *
 p, role:admin, /user/account/:id, *
 
 p, role:employee, /user/:id, read
+p, role:employee, /user/employee, read
 p, role:employee, /user/:id, update
 p, role:employee, /user/account/:id, *
 
