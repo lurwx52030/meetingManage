@@ -22,8 +22,6 @@ import { RoleGuard } from 'src/role/role.guard';
 import { MeetingFileService } from './meeting-file.service';
 
 @Controller('meeting-file')
-@UseGuards(AuthGuard('jwt'))
-@UseGuards(RoleGuard)
 export class MeetingFileController {
   constructor(
     private readonly meetingFileService: MeetingFileService,
@@ -32,6 +30,8 @@ export class MeetingFileController {
   ) {}
 
   @Post('/:meetingId')
+  @UseGuards(AuthGuard('jwt'))
+  @UseGuards(RoleGuard)
   @UseInterceptors(FilesInterceptor('file'))
   async create(
     @Param('meetingId') meetingId: string,
@@ -42,13 +42,19 @@ export class MeetingFileController {
     if (meeting.length === 0) {
       throw new HttpException('會議不存在', HttpStatus.NOT_FOUND);
     }
-    return files.map(({ fieldname, originalname }) => ({
+    console.log(`file: ${files}`);
+    const fileList = files.map(({ fieldname, originalname }, index) => ({
+      id: index,
       fieldname,
-      originalname,
+      name: originalname,
+      download: `http://localhost:5000/meeting-file/download/${meetingId}-${originalname}`,
     }));
+    return Result.ok(fileList, '上傳成功');
   }
 
   @Get('/:meetingId')
+  @UseGuards(RoleGuard)
+  @UseGuards(AuthGuard('jwt'))
   getDownloadList(@Param('meetingId') meetingId: string) {
     const path = join(__dirname, '../../', 'uploads');
     try {
@@ -56,9 +62,13 @@ export class MeetingFileController {
       console.log(this.configService.get('domain'));
       const matchingFiles = files
         .filter((file) => file.includes(meetingId))
-        .map((file) => `http://localhost:5000/meeting-file/download/${file}`);
+        .map((file, index) => ({
+          id: index,
+          name: file,
+          download: `http://localhost:5000/meeting-file/download/${file}`,
+        }));
       console.log(matchingFiles);
-      return matchingFiles;
+      return Result.ok(matchingFiles, '查詢成功');
     } catch (err) {
       throw new HttpException(
         '會議不存在或是該會議沒有資料',
@@ -78,6 +88,8 @@ export class MeetingFileController {
   }
 
   @Delete('/:path')
+  @UseGuards(RoleGuard)
+  @UseGuards(AuthGuard('jwt'))
   remove(@Param('path') path: string) {
     const fullPath = join(__dirname, '../../', 'uploads', path);
     if (!fs.existsSync(fullPath)) {
