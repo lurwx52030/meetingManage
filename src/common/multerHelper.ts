@@ -1,6 +1,6 @@
 import { Request } from 'express';
-import { join } from 'path';
 import * as fs from 'fs';
+import { join } from 'path';
 
 export class MulterHelper {
   public static destination(
@@ -20,8 +20,9 @@ export class MulterHelper {
     file: Express.Multer.File,
     callback: (error: Error | null, destination: string) => void,
   ): void {
-    const { originalname } = file;
+    let { originalname } = file;
     const timestamp = new Date().toISOString().replace(/:/g, '-');
+    originalname = Buffer.from(originalname, 'latin1').toString('utf-8');
     if (request.params.meetingId !== undefined) {
       callback(null, `${request.params.meetingId}-${originalname}`);
       return;
