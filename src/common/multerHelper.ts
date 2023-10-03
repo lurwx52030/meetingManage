@@ -22,7 +22,9 @@ export class MulterHelper {
   ): void {
     let { originalname } = file;
     const timestamp = new Date().toISOString().replace(/:/g, '-');
+    // 將檔名編碼轉成utf8
     originalname = Buffer.from(originalname, 'latin1').toString('utf-8');
+
     if (request.params.meetingId !== undefined) {
       callback(null, `${request.params.meetingId}-${originalname}`);
       return;
