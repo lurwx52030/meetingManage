@@ -1,26 +1,25 @@
 import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
-import { ScheduleModule } from '@nestjs/schedule';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
-import { UserModule } from './user/user.module';
-import { LinebotModule } from './linebot/linebot.module';
-import { AppConfigModule } from './config/app-config.module';
-import { AppHttpLogMiddleware } from './app.http-log/app.http-log.middleware';
-import { ScheduleService } from './schedule/schedule.service';
-import { AuthModule } from './auth/auth.module';
-import { MettingRoomModule } from './meeting-room/meeting-room.module';
-import { MeetingroomBorrowModule } from './meetingroom-borrow/meetingroom-borrow.module';
-import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule, ConfigService } from '@nestjs/config';
+import { MulterModule } from '@nestjs/platform-express';
+import { ScheduleModule } from '@nestjs/schedule';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { diskStorage } from 'multer';
+import { join } from 'path';
+import { AppController } from './app.controller';
+import { AppHttpLogMiddleware } from './app.http-log/app.http-log.middleware';
+import { AppService } from './app.service';
+import { AuthModule } from './auth/auth.module';
+import { MulterHelper } from './common/multerHelper';
+import { AppConfigModule } from './config/app-config.module';
+import dbConfig from './config/db.config';
+import { LinebotModule } from './linebot/linebot.module';
+import { MeetingFileModule } from './meeting-file/meeting-file.module';
+import { MeetingMemberModule } from './meeting-member/meeting-member.module';
+import { MettingRoomModule } from './meeting-room/meeting-room.module';
 import { MeetingModule } from './meeting/meeting.module';
 import { RoleModule } from './role/role.module';
-import dbConfig from './config/db.config';
-import { join } from 'path';
-import { MeetingMemberModule } from './meeting-member/meeting-member.module';
-import { MulterModule } from '@nestjs/platform-express';
-import { MeetingFileModule } from './meeting-file/meeting-file.module';
-import { diskStorage } from 'multer';
-import { MulterHelper } from './common/multerHelper';
+import { ScheduleService } from './schedule/schedule.service';
+import { UserModule } from './user/user.module';
 
 @Module({
   imports: [
@@ -31,7 +30,6 @@ import { MulterHelper } from './common/multerHelper';
     AuthModule,
     MeetingModule,
     MettingRoomModule,
-    MeetingroomBorrowModule,
     MeetingMemberModule,
     TypeOrmModule.forRootAsync({
       imports: [ConfigModule],

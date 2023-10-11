@@ -1,5 +1,4 @@
 import { Meeting } from 'src/meeting/entities/meeting.entity';
-import { MeetingroomBorrow } from 'src/meetingroom-borrow/entities/meetingroom-borrow.entity';
 import { Column, Entity, OneToMany, PrimaryColumn } from 'typeorm';
 
 @Entity()
