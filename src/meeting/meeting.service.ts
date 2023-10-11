@@ -98,24 +98,6 @@ export class MeetingService {
     );
   }
 
-  async findbyMeetingRoom(id: string) {
-    return await this.meetingRepository.query(
-      `
-        SELECT
-          meeting_room.id,
-          meeting.name,
-          meeting.start,
-          meeting.end
-        FROM
-          meeting_room
-          JOIN meeting ON meeting_room.id = meeting.meetingRoomId
-        WHERE
-          meeting_room.id = ?;
-      `,
-      [id],
-    );
-  }
-
   async update(meegingId: string, data: UpdateMeetingDto) {
     const meetingRoom = (
       await this.MeetingRoomService.getMeetingRoombyId(data.meetingRoomId)

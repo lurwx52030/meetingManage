@@ -10,7 +10,6 @@ p, role:employee, /user/account/:id, *
 
 p, role:employee, /meeting, *
 p, role:employee, /meeting/:id, *
-p, role:employee, /meeting/room/:id, *
 p, role:employee, /meeting/checkin/:id/:status, *
 p, role:employee, /meeting/checkout/:id/:status, *
 
