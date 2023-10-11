@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 5.1.2
+-- version 5.2.1
 -- https://www.phpmyadmin.net/
 --
--- Host: localhost:3306
--- Generation Time: Sep 16, 2023 at 07:36 AM
--- Server version: 5.7.24
--- PHP Version: 8.1.0
+-- 主機： localhost:3306
+-- 產生時間： 2023 年 10 月 11 日 15:40
+-- 伺服器版本： 5.7.43
+-- PHP 版本： 8.2.8
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -18,7 +18,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Database: `meeting_manage`
+-- 資料庫： `meeting_manage`
 --
 CREATE DATABASE IF NOT EXISTS `meeting_manage` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
 USE `meeting_manage`;
@@ -26,7 +26,7 @@ USE `meeting_manage`;
 -- --------------------------------------------------------
 
 --
--- Table structure for table `meeting`
+-- 資料表結構 `meeting`
 --
 
 DROP TABLE IF EXISTS `meeting`;
@@ -44,15 +44,20 @@ CREATE TABLE `meeting` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
--- Dumping data for table `meeting`
+-- 資料表新增資料前，先清除舊資料 `meeting`
+--
+
+TRUNCATE TABLE `meeting`;
+--
+-- 傾印資料表的資料 `meeting`
 --
 
 INSERT INTO `meeting` (`id`, `name`, `start`, `end`, `meetingRoomId`, `creatorId`, `isCheckin`, `checkLimit`, `isCheckout`, `notificationTime`) VALUES
-('M030', 'zzzz', '2022-07-07 18:25:00', '2022-07-07 19:25:00', 'A001', 'A124', 0, 1, 0, 15),
-('M046', 'asd', '2023-07-08 15:30:00', '2023-07-08 17:30:00', 'A001', 'A124', 0, 5, 0, 10);
+('M030', 'zzzz', '2023-09-08 18:30:00', '2023-09-08 19:30:00', 'A001', 'A124', 0, 1, 0, 30),
+('M046', 'asd', '2023-06-08 15:30:00', '2023-06-08 17:30:00', 'A002', 'A124', 0, 5, 0, 0);
 
 --
--- Triggers `meeting`
+-- 觸發器 `meeting`
 --
 DROP TRIGGER IF EXISTS `meetingroomAutoId`;
 DELIMITER $$
@@ -66,21 +71,7 @@ DELIMITER ;
 -- --------------------------------------------------------
 
 --
--- Table structure for table `meetingroom_borrow`
---
-
-DROP TABLE IF EXISTS `meetingroom_borrow`;
-CREATE TABLE `meetingroom_borrow` (
-  `id` int(11) NOT NULL,
-  `start` datetime NOT NULL,
-  `end` datetime NOT NULL,
-  `meetingRoomId` varchar(255) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
--- --------------------------------------------------------
-
---
--- Table structure for table `meeting_member`
+-- 資料表結構 `meeting_member`
 --
 
 DROP TABLE IF EXISTS `meeting_member`;
@@ -93,16 +84,21 @@ CREATE TABLE `meeting_member` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
--- Dumping data for table `meeting_member`
+-- 資料表新增資料前，先清除舊資料 `meeting_member`
+--
+
+TRUNCATE TABLE `meeting_member`;
+--
+-- 傾印資料表的資料 `meeting_member`
 --
 
 INSERT INTO `meeting_member` (`id`, `participantId`, `meetingId`, `singin`, `singout`) VALUES
-(10, 'A124', 'M030', '2023-07-07 18:45:00', '2023-07-07 19:25:00');
+(17, 'A124', 'M046', NULL, NULL);
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `meeting_room`
+-- 資料表結構 `meeting_room`
 --
 
 DROP TABLE IF EXISTS `meeting_room`;
@@ -113,7 +109,12 @@ CREATE TABLE `meeting_room` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
--- Dumping data for table `meeting_room`
+-- 資料表新增資料前，先清除舊資料 `meeting_room`
+--
+
+TRUNCATE TABLE `meeting_room`;
+--
+-- 傾印資料表的資料 `meeting_room`
 --
 
 INSERT INTO `meeting_room` (`id`, `name`, `location`) VALUES
@@ -123,7 +124,7 @@ INSERT INTO `meeting_room` (`id`, `name`, `location`) VALUES
 -- --------------------------------------------------------
 
 --
--- Table structure for table `meeting_sequence`
+-- 資料表結構 `meeting_sequence`
 --
 
 DROP TABLE IF EXISTS `meeting_sequence`;
@@ -132,7 +133,12 @@ CREATE TABLE `meeting_sequence` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
--- Dumping data for table `meeting_sequence`
+-- 資料表新增資料前，先清除舊資料 `meeting_sequence`
+--
+
+TRUNCATE TABLE `meeting_sequence`;
+--
+-- 傾印資料表的資料 `meeting_sequence`
 --
 
 INSERT INTO `meeting_sequence` (`id`) VALUES
@@ -185,12 +191,16 @@ INSERT INTO `meeting_sequence` (`id`) VALUES
 (47),
 (48),
 (49),
-(50);
+(50),
+(51),
+(52),
+(53),
+(54);
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `user`
+-- 資料表結構 `user`
 --
 
 DROP TABLE IF EXISTS `user`;
@@ -205,20 +215,25 @@ CREATE TABLE `user` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
--- Dumping data for table `user`
+-- 資料表新增資料前，先清除舊資料 `user`
+--
+
+TRUNCATE TABLE `user`;
+--
+-- 傾印資料表的資料 `user`
 --
 
 INSERT INTO `user` (`id`, `name`, `account`, `password`, `salt`, `role`, `lineid`) VALUES
 ('A124', 'uuu', 'asdfgh', 'dcdfe1e77ec35072007f8944428ae364eae257f9a6faeba628275fb1e067d1075944bb38454a5b21ea058745e4620f2f200fcc8f545407e6791cc6c41d5326e9', '41fb705682d413ca6496a9a38182567c', 'employee', NULL),
 ('A125', 'asdf', 'zxcv', 'c9d12d8edc28ae8738c0e296bb114065e6dd51dbac7f951acf12a37d29425364a9137c05d53f3a89965dcb770910e00cb302b60abaf1fdecc6f2f5871567023d', 'f3d78e0bc37fb5b4a69299ab047c9fbe', 'admin', NULL),
-('A222', 'aaaddd', 'aaaddd', '70144fd1620a8eb3c38a6e91058757413e93b4daa9469ecdfa466d57c79d7482db35c61a605e8bdd68825b569a9ba1295cbbfecddeacd72441919b9dd07063d1', '8fc64327a17b0a5fe1dbc80179c82c53', 'employee', NULL);
+('d123', 'd', 'd', '48cef256a29d595dc0f240dff0c64b30279679ffe0d18e891cb1c42d656f7bebd94a70518a1c8dd7b862d15c41d3dc61d5b854873762770a73c7308ccc1bbb5f', 'e74cba17935a15d81317118b809cc126', 'employee', NULL);
 
 --
--- Indexes for dumped tables
+-- 已傾印資料表的索引
 --
 
 --
--- Indexes for table `meeting`
+-- 資料表索引 `meeting`
 --
 ALTER TABLE `meeting`
   ADD PRIMARY KEY (`id`),
@@ -226,14 +241,7 @@ ALTER TABLE `meeting`
   ADD KEY `FK_fe775c687e31ff7950e35650c40` (`creatorId`);
 
 --
--- Indexes for table `meetingroom_borrow`
---
-ALTER TABLE `meetingroom_borrow`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `FK_ba36ba5095271c4e90c4e17b952` (`meetingRoomId`);
-
---
--- Indexes for table `meeting_member`
+-- 資料表索引 `meeting_member`
 --
 ALTER TABLE `meeting_member`
   ADD PRIMARY KEY (`id`),
@@ -241,68 +249,56 @@ ALTER TABLE `meeting_member`
   ADD KEY `FK_58f476a39e1b8c0ea2ceab23552` (`meetingId`);
 
 --
--- Indexes for table `meeting_room`
+-- 資料表索引 `meeting_room`
 --
 ALTER TABLE `meeting_room`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `meeting_sequence`
+-- 資料表索引 `meeting_sequence`
 --
 ALTER TABLE `meeting_sequence`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `user`
+-- 資料表索引 `user`
 --
 ALTER TABLE `user`
   ADD PRIMARY KEY (`id`),
   ADD UNIQUE KEY `IDX_4ab2df0a57a74fdf904e0e2708` (`account`);
 
 --
--- AUTO_INCREMENT for dumped tables
+-- 在傾印的資料表使用自動遞增(AUTO_INCREMENT)
 --
 
 --
--- AUTO_INCREMENT for table `meetingroom_borrow`
---
-ALTER TABLE `meetingroom_borrow`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
-
---
--- AUTO_INCREMENT for table `meeting_member`
+-- 使用資料表自動遞增(AUTO_INCREMENT) `meeting_member`
 --
 ALTER TABLE `meeting_member`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
 
 --
--- AUTO_INCREMENT for table `meeting_sequence`
+-- 使用資料表自動遞增(AUTO_INCREMENT) `meeting_sequence`
 --
 ALTER TABLE `meeting_sequence`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=51;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=55;
 
 --
--- Constraints for dumped tables
+-- 已傾印資料表的限制式
 --
 
 --
--- Constraints for table `meeting`
+-- 資料表的限制式 `meeting`
 --
 ALTER TABLE `meeting`
   ADD CONSTRAINT `FK_a00e1c5af408052c92418ea9bec` FOREIGN KEY (`meetingRoomId`) REFERENCES `meeting_room` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   ADD CONSTRAINT `FK_fe775c687e31ff7950e35650c40` FOREIGN KEY (`creatorId`) REFERENCES `user` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 --
--- Constraints for table `meetingroom_borrow`
---
-ALTER TABLE `meetingroom_borrow`
-  ADD CONSTRAINT `FK_ba36ba5095271c4e90c4e17b952` FOREIGN KEY (`meetingRoomId`) REFERENCES `meeting_room` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
-
---
--- Constraints for table `meeting_member`
+-- 資料表的限制式 `meeting_member`
 --
 ALTER TABLE `meeting_member`
-  ADD CONSTRAINT `FK_34b5654c29e64f0a80ff5f2c691` FOREIGN KEY (`participantId`) REFERENCES `user` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  ADD CONSTRAINT `FK_34b5654c29e64f0a80ff5f2c691` FOREIGN KEY (`participantId`) REFERENCES `user` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION,
   ADD CONSTRAINT `FK_58f476a39e1b8c0ea2ceab23552` FOREIGN KEY (`meetingId`) REFERENCES `meeting` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION;
 COMMIT;
 
