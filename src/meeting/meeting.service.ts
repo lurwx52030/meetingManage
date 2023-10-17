@@ -98,6 +98,13 @@ export class MeetingService {
     );
   }
 
+  async findbyCreator(id: string) {
+    return await this.meetingRepository.query(
+      'SELECT id FROM `meeting` where creatorId=?',
+      [id],
+    );
+  }
+
   async findByMeetingRoom(id: string) {
     return await this.meetingRepository.query(
       `
