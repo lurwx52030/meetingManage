@@ -2,8 +2,8 @@
 -- version 5.2.1
 -- https://www.phpmyadmin.net/
 --
--- 主機： localhost:3306
--- 產生時間： 2023 年 10 月 11 日 15:40
+-- 主機： db:3306
+-- 產生時間： 2023 年 10 月 17 日 09:36
 -- 伺服器版本： 5.7.43
 -- PHP 版本： 8.2.8
 
@@ -44,11 +44,6 @@ CREATE TABLE `meeting` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
--- 資料表新增資料前，先清除舊資料 `meeting`
---
-
-TRUNCATE TABLE `meeting`;
---
 -- 傾印資料表的資料 `meeting`
 --
 
@@ -84,11 +79,6 @@ CREATE TABLE `meeting_member` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
--- 資料表新增資料前，先清除舊資料 `meeting_member`
---
-
-TRUNCATE TABLE `meeting_member`;
---
 -- 傾印資料表的資料 `meeting_member`
 --
 
@@ -109,11 +99,6 @@ CREATE TABLE `meeting_room` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
--- 資料表新增資料前，先清除舊資料 `meeting_room`
---
-
-TRUNCATE TABLE `meeting_room`;
---
 -- 傾印資料表的資料 `meeting_room`
 --
 
@@ -132,11 +117,6 @@ CREATE TABLE `meeting_sequence` (
   `id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
---
--- 資料表新增資料前，先清除舊資料 `meeting_sequence`
---
-
-TRUNCATE TABLE `meeting_sequence`;
 --
 -- 傾印資料表的資料 `meeting_sequence`
 --
@@ -215,18 +195,14 @@ CREATE TABLE `user` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
--- 資料表新增資料前，先清除舊資料 `user`
---
-
-TRUNCATE TABLE `user`;
---
 -- 傾印資料表的資料 `user`
 --
 
 INSERT INTO `user` (`id`, `name`, `account`, `password`, `salt`, `role`, `lineid`) VALUES
+('A121', 'asdf', 'kzxcv', '607015c6ac3c190d38b056d548ccbd546f9dbd1bed77f750b790e725fd6d0ed69a6bd81185c68ac4d9b5054c7f8b1c9a38bde90d7058664773bd09fda1cd5a34', 'fb10e6f1325081d30104e420baba2433', 'employee', NULL),
 ('A124', 'uuu', 'asdfgh', 'dcdfe1e77ec35072007f8944428ae364eae257f9a6faeba628275fb1e067d1075944bb38454a5b21ea058745e4620f2f200fcc8f545407e6791cc6c41d5326e9', '41fb705682d413ca6496a9a38182567c', 'employee', NULL),
 ('A125', 'asdf', 'zxcv', 'c9d12d8edc28ae8738c0e296bb114065e6dd51dbac7f951acf12a37d29425364a9137c05d53f3a89965dcb770910e00cb302b60abaf1fdecc6f2f5871567023d', 'f3d78e0bc37fb5b4a69299ab047c9fbe', 'admin', NULL),
-('d123', 'd', 'd', '48cef256a29d595dc0f240dff0c64b30279679ffe0d18e891cb1c42d656f7bebd94a70518a1c8dd7b862d15c41d3dc61d5b854873762770a73c7308ccc1bbb5f', 'e74cba17935a15d81317118b809cc126', 'employee', NULL);
+('D123', 'd', 'd', '48cef256a29d595dc0f240dff0c64b30279679ffe0d18e891cb1c42d656f7bebd94a70518a1c8dd7b862d15c41d3dc61d5b854873762770a73c7308ccc1bbb5f', 'e74cba17935a15d81317118b809cc126', 'admin', NULL);
 
 --
 -- 已傾印資料表的索引
