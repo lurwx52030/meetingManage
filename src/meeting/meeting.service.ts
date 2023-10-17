@@ -187,13 +187,26 @@ export class MeetingService {
     console.log(typeof state);
     const updateRes = await this.meetingRepository.update(id, meeting);
     if (updateRes.affected > 0) {
-      //自動關閉簽到
+      // 自動關閉簽到
       // 1min=60000ms
-      const timeout = setTimeout(async () => {
-        meeting.isCheckin = false;
-        await this.meetingRepository.update(id, meeting);
-      }, meeting.checkLimit * 60000);
-      this.schedulerRegistry.addTimeout('endCheckin', timeout);
+      if (meeting.isCheckin) {
+        const timeout = setTimeout(async () => {
+          meeting.isCheckin = false;
+          await this.meetingRepository.update(id, meeting);
+
+          this.schedulerRegistry.deleteTimeout('endCheckin');
+        }, meeting.checkLimit * 60000);
+
+        if (!this.schedulerRegistry.doesExist('timeout', 'endCheckin')) {
+          this.schedulerRegistry.addTimeout('endCheckin', timeout);
+        } else {
+          throw new HttpException('已經開啟簽到！', HttpStatus.NOT_ACCEPTABLE);
+        }
+      } else {
+        if (this.schedulerRegistry.doesExist('timeout', 'endCheckin')) {
+          this.schedulerRegistry.deleteTimeout('endCheckin');
+        }
+      }
 
       return meeting.isCheckin;
     }
@@ -204,13 +217,27 @@ export class MeetingService {
     meeting.isCheckout = state === 1;
     const updateRes = await this.meetingRepository.update(id, meeting);
     if (updateRes.affected > 0) {
-      //自動關閉簽退
+      // 自動關閉簽退
       // 1min=60000ms
-      const timeout = setTimeout(async () => {
-        meeting.isCheckout = false;
-        await this.meetingRepository.update(id, meeting);
-      }, meeting.checkLimit * 60000);
-      this.schedulerRegistry.addTimeout('endCheckout', timeout);
+      if (meeting.isCheckout) {
+        const timeout = setTimeout(async () => {
+          meeting.isCheckout = false;
+          await this.meetingRepository.update(id, meeting);
+
+          this.schedulerRegistry.deleteTimeout('endCheckout');
+        }, meeting.checkLimit * 60000);
+
+        if (!this.schedulerRegistry.doesExist('timeout', 'endCheckout')) {
+          this.schedulerRegistry.addTimeout('endCheckout', timeout);
+        } else {
+          throw new HttpException('已經開啟簽退！', HttpStatus.NOT_ACCEPTABLE);
+        }
+        console.log(this.schedulerRegistry.getTimeouts());
+      } else {
+        if (this.schedulerRegistry.doesExist('timeout', 'endCheckout')) {
+          this.schedulerRegistry.deleteTimeout('endCheckout');
+        }
+      }
 
       return meeting.isCheckout;
     }
