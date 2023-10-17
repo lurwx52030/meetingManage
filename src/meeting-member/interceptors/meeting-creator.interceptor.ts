@@ -23,7 +23,7 @@ class meetingCreatorInterceptor implements NestInterceptor {
     const reqParams = req.params;
     let isCreator = true;
 
-    this.meetingService.findCreator(reqUserId).then((res) => {
+    this.meetingService.findbyCreator(reqUserId).then((res) => {
       if (res instanceof Array) {
         isCreator = res.filter((item) => item.id === reqParams.id).length == 1;
       }
