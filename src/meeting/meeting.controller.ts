@@ -7,11 +7,9 @@ import {
   Post,
   Put,
   UseGuards,
-  UseInterceptors,
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { Result } from 'src/common/standardResult';
-import meetingCreatorInterceptor from 'src/meeting-member/interceptors/meeting-creator.interceptor';
 import { RoleGuard } from 'src/role/role.guard';
 import { CreateMeetingDto } from './dto/create-meeting.dto';
 import { UpdateMeetingDto } from './dto/update-meeting.dto';
@@ -53,7 +51,6 @@ export class MeetingController {
   }
 
   @Put(':id')
-  @UseInterceptors(meetingCreatorInterceptor)
   async update(
     @Param('id') id: string,
     @Body() updateMeetingDto: UpdateMeetingDto,
@@ -65,7 +62,6 @@ export class MeetingController {
   }
 
   @Delete(':id')
-  @UseInterceptors(meetingCreatorInterceptor)
   async remove(@Param('id') id: string) {
     const res = await this.meetingService.remove(id);
     return res.affected > 0
@@ -74,14 +70,12 @@ export class MeetingController {
   }
 
   @Get('/checkin/:id/:status')
-  @UseInterceptors(meetingCreatorInterceptor)
   async checkin(@Param('id') id: string, @Param('status') status: number) {
     const res = await this.meetingService.Checkinstatus(id, +status);
     return Result.ok(null, `已${res ? '開啟' : '關閉'}簽到`);
   }
 
   @Get('/checkout/:id/:status')
-  @UseInterceptors(meetingCreatorInterceptor)
   async checkout(@Param('id') id: string, @Param('status') status: number) {
     const res = await this.meetingService.Checkoutstatus(id, +status);
     return Result.ok(null, `已${res ? '開啟' : '關閉'}簽退`);
