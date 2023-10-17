@@ -21,8 +21,6 @@ export class MeetingMemberService {
   ) {}
 
   async create(data: CreateMeetingMemberDto) {
-    const exceptions: HttpException[] = [];
-
     const employee = await this.userRepository.findOne({
       where: { id: data.employeeId },
     });
