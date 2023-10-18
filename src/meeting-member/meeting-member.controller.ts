@@ -1,12 +1,22 @@
-import { Body, Controller, Delete, Get, Param, Post } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Post,
+  UseGuards,
+} from '@nestjs/common';
+import { AuthGuard } from '@nestjs/passport';
 import { Result } from 'src/common/standardResult';
+import { RoleGuard } from 'src/role/role.guard';
 import { UpdateResult } from 'typeorm';
 import { CreateMeetingMemberDto } from './dto/create-meeting-member.dto';
 import { MeetingMemberService } from './meeting-member.service';
 
 @Controller('meeting-member')
-// @UseGuards(AuthGuard('jwt'))
-// @UseGuards(RoleGuard)
+@UseGuards(AuthGuard('jwt'))
+@UseGuards(RoleGuard)
 export class MeetingMemberController {
   constructor(private readonly meetingMemberService: MeetingMemberService) {}
 
