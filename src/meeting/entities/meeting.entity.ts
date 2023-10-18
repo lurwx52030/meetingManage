@@ -21,6 +21,12 @@ export class Meeting {
   })
   creator: User;
 
+  @Column({
+    name: 'createTime',
+    type: 'datetime',
+  })
+  createTime: Date;
+
   @OneToMany(() => MeetingMember, (meeting) => meeting, {
     onDelete: 'CASCADE',
   })
