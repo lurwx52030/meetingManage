@@ -109,8 +109,7 @@ export class MeetingMemberService {
       return { message: '尚未開始簽退', status: HttpStatus.NOT_ACCEPTABLE };
     }
 
-    //TODO: 後面記得替換成當前日期
-    const current = new Date(2023, 6, 7, 19, 25);
+    const current = new Date();
 
     if (current < meeting.start) {
       throw new HttpException('會議尚未開始', HttpStatus.NOT_ACCEPTABLE);
