@@ -44,6 +44,14 @@ export class MeetingService {
 
     const newBorrowStart = new Date(data.start);
     const newBorrowEnd = new Date(data.end);
+    const current = new Date();
+
+    if (newBorrowStart < current) {
+      throw new HttpException(
+        '會議開始時間不得小於現在時間',
+        HttpStatus.NOT_ACCEPTABLE,
+      );
+    }
 
     if (newBorrowStart >= newBorrowEnd) {
       throw new HttpException(
@@ -75,6 +83,7 @@ export class MeetingService {
     const meeting = plainToClass(Meeting, { ...data, id: null });
     meeting.meetingRoom = meetingRoom;
     meeting.creator = creator;
+    meeting.createTime = new Date();
     meeting.start = newBorrowStart;
     meeting.end = newBorrowEnd;
     return await this.meetingRepository.insert(meeting);
