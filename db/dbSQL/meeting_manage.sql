@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- 主機： db:3306
--- 產生時間： 2023 年 10 月 17 日 09:36
+-- 產生時間： 2023 年 10 月 18 日 14:26
 -- 伺服器版本： 5.7.43
 -- PHP 版本： 8.2.8
 
@@ -40,16 +40,16 @@ CREATE TABLE `meeting` (
   `isCheckin` tinyint(4) NOT NULL DEFAULT '0',
   `checkLimit` int(11) NOT NULL DEFAULT '5',
   `isCheckout` tinyint(4) NOT NULL DEFAULT '0',
-  `notificationTime` int(11) DEFAULT NULL
+  `notificationTime` int(11) DEFAULT NULL,
+  `createTime` datetime NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- 傾印資料表的資料 `meeting`
 --
 
-INSERT INTO `meeting` (`id`, `name`, `start`, `end`, `meetingRoomId`, `creatorId`, `isCheckin`, `checkLimit`, `isCheckout`, `notificationTime`) VALUES
-('M030', 'zzzz', '2023-09-08 18:30:00', '2023-09-08 19:30:00', 'A001', 'A124', 0, 1, 0, 30),
-('M046', 'asd', '2023-06-08 15:30:00', '2023-06-08 17:30:00', 'A002', 'A124', 0, 5, 0, 0);
+INSERT INTO `meeting` (`id`, `name`, `start`, `end`, `meetingRoomId`, `creatorId`, `isCheckin`, `checkLimit`, `isCheckout`, `notificationTime`, `createTime`) VALUES
+('M056', 'rrr', '2023-10-18 21:07:00', '2023-10-18 22:07:00', 'A001', 'A124', 0, 5, 0, 15, '2023-10-18 20:08:11');
 
 --
 -- 觸發器 `meeting`
@@ -83,7 +83,8 @@ CREATE TABLE `meeting_member` (
 --
 
 INSERT INTO `meeting_member` (`id`, `participantId`, `meetingId`, `singin`, `singout`) VALUES
-(17, 'A124', 'M046', NULL, NULL);
+(45, 'A121', 'M056', NULL, NULL),
+(46, 'P555', 'M056', NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -175,7 +176,9 @@ INSERT INTO `meeting_sequence` (`id`) VALUES
 (51),
 (52),
 (53),
-(54);
+(54),
+(55),
+(56);
 
 -- --------------------------------------------------------
 
@@ -202,7 +205,8 @@ INSERT INTO `user` (`id`, `name`, `account`, `password`, `salt`, `role`, `lineid
 ('A121', 'asdf', 'kzxcv', '607015c6ac3c190d38b056d548ccbd546f9dbd1bed77f750b790e725fd6d0ed69a6bd81185c68ac4d9b5054c7f8b1c9a38bde90d7058664773bd09fda1cd5a34', 'fb10e6f1325081d30104e420baba2433', 'employee', NULL),
 ('A124', 'uuu', 'asdfgh', 'dcdfe1e77ec35072007f8944428ae364eae257f9a6faeba628275fb1e067d1075944bb38454a5b21ea058745e4620f2f200fcc8f545407e6791cc6c41d5326e9', '41fb705682d413ca6496a9a38182567c', 'employee', NULL),
 ('A125', 'asdf', 'zxcv', 'c9d12d8edc28ae8738c0e296bb114065e6dd51dbac7f951acf12a37d29425364a9137c05d53f3a89965dcb770910e00cb302b60abaf1fdecc6f2f5871567023d', 'f3d78e0bc37fb5b4a69299ab047c9fbe', 'admin', NULL),
-('D123', 'd', 'd', '48cef256a29d595dc0f240dff0c64b30279679ffe0d18e891cb1c42d656f7bebd94a70518a1c8dd7b862d15c41d3dc61d5b854873762770a73c7308ccc1bbb5f', 'e74cba17935a15d81317118b809cc126', 'admin', NULL);
+('D123', 'd', 'd', '48cef256a29d595dc0f240dff0c64b30279679ffe0d18e891cb1c42d656f7bebd94a70518a1c8dd7b862d15c41d3dc61d5b854873762770a73c7308ccc1bbb5f', 'e74cba17935a15d81317118b809cc126', 'admin', NULL),
+('P555', 'dllm', 'knnzxc', 'd5c2396b9bc38914e5ac2b6fb563ac3e3a543edcc640a9f22cdc28f591782f06c91a43446db3a6f8b5033047c2bf1b269a838b6cc5c8d6a90bd0f30d09d62442', '25aaeab029ad36ffe69a76ab2ea369b6', 'employee', NULL);
 
 --
 -- 已傾印資料表的索引
@@ -251,13 +255,13 @@ ALTER TABLE `user`
 -- 使用資料表自動遞增(AUTO_INCREMENT) `meeting_member`
 --
 ALTER TABLE `meeting_member`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=47;
 
 --
 -- 使用資料表自動遞增(AUTO_INCREMENT) `meeting_sequence`
 --
 ALTER TABLE `meeting_sequence`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=55;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=57;
 
 --
 -- 已傾印資料表的限制式
