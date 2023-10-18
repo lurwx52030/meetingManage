@@ -77,13 +77,13 @@ export class MeetingController {
   @UseInterceptors(meetingCreatorInterceptor)
   async checkin(@Param('id') id: string, @Param('status') status: number) {
     const res = await this.meetingService.Checkinstatus(id, +status);
-    return Result.ok(null, `已${res ? '開啟' : '關閉'}簽到`);
+    return Result.ok(res, `已${res ? '開啟' : '關閉'}簽到`);
   }
 
   @Get('/checkout/:id/:status')
   @UseInterceptors(meetingCreatorInterceptor)
   async checkout(@Param('id') id: string, @Param('status') status: number) {
     const res = await this.meetingService.Checkoutstatus(id, +status);
-    return Result.ok(null, `已${res ? '開啟' : '關閉'}簽退`);
+    return Result.ok(res, `已${res ? '開啟' : '關閉'}簽退`);
   }
 }
