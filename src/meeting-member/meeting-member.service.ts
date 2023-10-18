@@ -28,11 +28,18 @@ export class MeetingMemberService {
       throw new HttpException('此員工不存在', HttpStatus.NOT_ACCEPTABLE);
     }
 
-    const meeting = await this.meetingRepository.findOne({
-      where: { id: data.meetingId },
-    });
-    if (meeting === null) {
+    const meeting = await this.meetingRepository.query(
+      'select * from meeting where id=?',
+      [data.meetingId],
+    );
+
+    if (meeting instanceof Array && meeting.length < 1) {
       throw new HttpException('此會議不存在', HttpStatus.NOT_ACCEPTABLE);
+    } else if (data.employeeId === meeting[0].creatorId) {
+      throw new HttpException(
+        '您已是此會議創立人！',
+        HttpStatus.NOT_ACCEPTABLE,
+      );
     }
 
     console.log(data.meetingId, data.employeeId);
@@ -49,8 +56,9 @@ export class MeetingMemberService {
     }
 
     const meetingMember = plainToClass(MeetingMember, { ...data });
-    meetingMember.meeting = meeting;
+    meetingMember.meeting = plainToClass(Meeting, { ...meeting[0] });
     meetingMember.participant = employee;
+    // console.log(meetingMember);
 
     return await this.meetingMemberRepository.insert(meetingMember);
   }
