@@ -193,7 +193,6 @@ export class MeetingService {
   async Checkinstatus(id: string, state: number) {
     const meeting = await this.meetingRepository.findOne({ where: { id } });
     meeting.isCheckin = state === 1;
-    console.log(typeof state);
     const updateRes = await this.meetingRepository.update(id, meeting);
     if (updateRes.affected > 0) {
       // 自動關閉簽到
@@ -203,7 +202,9 @@ export class MeetingService {
           meeting.isCheckin = false;
           await this.meetingRepository.update(id, meeting);
 
-          this.schedulerRegistry.deleteTimeout('endCheckin');
+          if (this.schedulerRegistry.doesExist('timeout', 'endCheckin')) {
+            this.schedulerRegistry.deleteTimeout('endCheckin');
+          }
         }, meeting.checkLimit * 60000);
 
         if (!this.schedulerRegistry.doesExist('timeout', 'endCheckin')) {
@@ -233,7 +234,9 @@ export class MeetingService {
           meeting.isCheckout = false;
           await this.meetingRepository.update(id, meeting);
 
-          this.schedulerRegistry.deleteTimeout('endCheckout');
+          if (this.schedulerRegistry.doesExist('timeout', 'endCheckin')) {
+            this.schedulerRegistry.deleteTimeout('endCheckin');
+          }
         }, meeting.checkLimit * 60000);
 
         if (!this.schedulerRegistry.doesExist('timeout', 'endCheckout')) {
