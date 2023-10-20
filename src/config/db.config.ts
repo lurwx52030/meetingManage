@@ -1,7 +1,7 @@
 import { ConfigService } from '@nestjs/config';
 import { TypeOrmModuleOptions } from '@nestjs/typeorm';
 
-type dbType = 'mysql' | 'sqlite';
+type dbType = 'mysql' | 'sqlite' | 'mysql_railway';
 
 export default (type: dbType) => {
   return async (config: ConfigService) => {
@@ -15,6 +15,18 @@ export default (type: dbType) => {
           username: config.get('db.mysql.username'),
           password: config.get('db.mysql.password'),
           database: config.get('db.mysql.database'),
+          autoLoadEntities: true,
+          synchronize: true,
+        };
+        break;
+      case 'mysql_railway':
+        conf = {
+          type: 'mysql',
+          host: config.get('db.mysql_railway.host'),
+          port: config.get('db.mysql_railway.port'),
+          username: config.get('db.mysql_railway.username'),
+          password: config.get('db.mysql_railway.password'),
+          database: config.get('db.mysql_railway.database'),
           autoLoadEntities: true,
           synchronize: true,
         };
