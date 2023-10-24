@@ -85,8 +85,6 @@ export class MeetingMemberService {
 
   //簽到簽退
   async attendance(id: string, meetingid: string, isSignIn: boolean) {
-    const exceptions: HttpException[] = [];
-
     const employee = await this.userRepository.findOne({
       where: { id },
     });
