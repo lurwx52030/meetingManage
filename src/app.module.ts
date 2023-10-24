@@ -1,15 +1,12 @@
 import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
-import { MulterModule } from '@nestjs/platform-express';
 import { ScheduleModule } from '@nestjs/schedule';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { diskStorage } from 'multer';
 import { join } from 'path';
 import { AppController } from './app.controller';
 import { AppHttpLogMiddleware } from './app.http-log/app.http-log.middleware';
 import { AppService } from './app.service';
 import { AuthModule } from './auth/auth.module';
-import { MulterHelper } from './common/multerHelper';
 import { AppConfigModule } from './config/app-config.module';
 import dbConfig from './config/db.config';
 import { LinebotModule } from './linebot/linebot.module';
@@ -40,12 +37,6 @@ import { UserModule } from './user/user.module';
       modelPath: join(__dirname, '../casbin/model.conf'),
       policyAdapter: join(__dirname, '../casbin/policy.csv'),
       global: true,
-    }),
-    MulterModule.register({
-      storage: diskStorage({
-        destination: MulterHelper.destination,
-        filename: MulterHelper.filenameHandler,
-      }),
     }),
     MeetingFileModule,
   ],
