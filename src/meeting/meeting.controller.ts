@@ -48,7 +48,7 @@ export class MeetingController {
   @Get('/room/:id')
   async findByMeetingRoom(@Param('id') id: string) {
     const res = await this.meetingService.findByMeetingRoom(id);
-    console.log(res);
+    // console.log(res);
     return Result.ok(res, '查詢成功');
   }
 
