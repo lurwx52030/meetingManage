@@ -61,9 +61,10 @@ export class MeetingService {
     }
 
     const borroweds = await this.meetingRepository.find({
-      // where: { meetingRoom },
+      where: { meetingRoom },
       relations: { meetingRoom: true },
     });
+    console.log(borroweds);
     borroweds.forEach((borrowed) => {
       if (
         isTimeOverlap(

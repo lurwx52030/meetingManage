@@ -36,7 +36,7 @@ export class MeetingMemberGateway
 
   @SubscribeMessage('hello')
   async helloEvent(@MessageBody() data: string) {
-    return Result.ok(null, data);
+    return Result.ok(data, 'ok');
   }
 
   @SubscribeMessage('member')
