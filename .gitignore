@@ -15,7 +15,7 @@ lerna-debug.log*
 .DS_Store
 
 #config
-config.yml
+# config.yml
 
 # Tests
 /coverage
