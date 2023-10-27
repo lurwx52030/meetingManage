@@ -31,7 +31,7 @@ import { UserModule } from './user/user.module';
     TypeOrmModule.forRootAsync({
       imports: [ConfigModule],
       inject: [ConfigService],
-      useFactory: dbConfig('mysql'),
+      useFactory: dbConfig('mysql_railway'),
     }),
     RoleModule.register({
       modelPath: join(__dirname, '../casbin/model.conf'),
