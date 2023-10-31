@@ -63,11 +63,16 @@ export class UserController {
       const reqUser = this.jwtService.verify(jwtToken, {
         secret: this.configService.get('jwt.secret'),
       });
-      // console.log(reqUser['role']);
 
       if (reqUser['role'] == 'admin' && reqUser['id'] === id) {
         result = await this.userService.getUserById(id);
+        result = result.map((data) => {
+          delete data.salt;
+          delete data.password;
+          return data;
+        });
       }
+      console.log(result);
 
       if (reqUser['role'] === 'employee') {
         if (reqUser['id'] !== result.id) {
