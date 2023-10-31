@@ -2,7 +2,8 @@ import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { SchedulerRegistry } from '@nestjs/schedule';
 import { InjectRepository } from '@nestjs/typeorm';
 import { plainToClass } from 'class-transformer';
-import isTimeOverlap from 'src/common/isTimeOverlap';
+import * as dayjs from 'dayjs';
+import * as isBetween from 'dayjs/plugin/isBetween';
 import { MeetingRoom } from 'src/meeting-room/entities/metting-room.entity';
 import { MeetingRoomService } from 'src/meeting-room/meeting-room.service';
 import { User } from 'src/user/entities/user.entity';
@@ -28,6 +29,8 @@ export class MeetingService {
   ) {}
 
   async create(data: CreateMeetingDto) {
+    dayjs.extend(isBetween);
+
     const meetingRoom = await this.meetingRoomRepository.findOne({
       where: { id: data.meetingRoomId },
     });
@@ -42,8 +45,13 @@ export class MeetingService {
       throw new HttpException('此員工不存在', HttpStatus.NOT_ACCEPTABLE);
     }
 
-    const newBorrowStart = new Date(data.start);
-    const newBorrowEnd = new Date(data.end);
+    const newBorrowStart = new Date(
+      dayjs(data.start).format('YYYY-MM-DD HH:mm:ss'),
+    );
+    const newBorrowEnd = new Date(
+      dayjs(data.end).format('YYYY-MM-DD HH:mm:ss'),
+    );
+    // console.log(newBorrowStart, newBorrowEnd);
     const current = new Date();
 
     if (newBorrowStart < current) {
@@ -64,15 +72,16 @@ export class MeetingService {
       where: { meetingRoom },
       relations: { meetingRoom: true },
     });
-    console.log(borroweds);
     borroweds.forEach((borrowed) => {
+      // isTimeOverlap(
+      //   newBorrowStart,
+      //   newBorrowEnd,
+      //   new Date(borrowed.start),
+      //   new Date(borrowed.end),
+      // )
       if (
-        isTimeOverlap(
-          newBorrowStart,
-          newBorrowEnd,
-          new Date(borrowed.start),
-          new Date(borrowed.end),
-        )
+        dayjs(newBorrowStart).isBetween(borrowed.start, borrowed.end) ||
+        dayjs(newBorrowEnd).isBetween(borrowed.start, borrowed.end)
       ) {
         throw new HttpException(
           '此會議室在這個時間點已被借用',
@@ -134,6 +143,8 @@ export class MeetingService {
   }
 
   async update(meegingId: string, data: UpdateMeetingDto) {
+    dayjs.extend(isBetween);
+
     const meetingRoom = (
       await this.MeetingRoomService.getMeetingRoombyId(data.meetingRoomId)
     )[0];
@@ -150,8 +161,12 @@ export class MeetingService {
     }
     delete data.creatorId;
 
-    const newBorrowStart = new Date(data.start);
-    const newBorrowEnd = new Date(data.end);
+    const newBorrowStart = new Date(
+      dayjs(data.start).format('YYYY-MM-DD HH:mm:ss'),
+    );
+    const newBorrowEnd = new Date(
+      dayjs(data.end).format('YYYY-MM-DD HH:mm:ss'),
+    );
 
     if (newBorrowStart >= newBorrowEnd) {
       throw new HttpException(
@@ -164,13 +179,15 @@ export class MeetingService {
       where: { meetingRoom, id: Not(meegingId) },
     });
     borroweds.forEach((borrowed) => {
+      // isTimeOverlap(
+      //   newBorrowStart,
+      //   newBorrowEnd,
+      //   new Date(borrowed.start),
+      //   new Date(borrowed.end),
+      // )
       if (
-        isTimeOverlap(
-          newBorrowStart,
-          newBorrowEnd,
-          new Date(borrowed.start),
-          new Date(borrowed.end),
-        )
+        dayjs(newBorrowStart).isBetween(borrowed.start, borrowed.end) ||
+        dayjs(newBorrowEnd).isBetween(borrowed.start, borrowed.end)
       ) {
         throw new HttpException(
           '此會議室在這個時間點已被借用',
@@ -193,6 +210,15 @@ export class MeetingService {
 
   async Checkinstatus(id: string, state: number) {
     const meeting = await this.meetingRepository.findOne({ where: { id } });
+
+    dayjs.extend(isBetween);
+    if (!dayjs(new Date()).isBetween(meeting.start, meeting.end)) {
+      throw new HttpException(
+        '會議尚未開始或會議已結束',
+        HttpStatus.NOT_ACCEPTABLE,
+      );
+    }
+
     meeting.isCheckin = state === 1;
     const updateRes = await this.meetingRepository.update(id, meeting);
     if (updateRes.affected > 0) {
@@ -225,6 +251,16 @@ export class MeetingService {
 
   async Checkoutstatus(id: string, state: number) {
     const meeting = await this.meetingRepository.findOne({ where: { id } });
+
+    dayjs.extend(isBetween);
+    const current = new Date();
+    if (!dayjs(current).isBetween(meeting.start, meeting.end)) {
+      throw new HttpException(
+        '會議尚未開始或會議已結束',
+        HttpStatus.NOT_ACCEPTABLE,
+      );
+    }
+
     meeting.isCheckout = state === 1;
     const updateRes = await this.meetingRepository.update(id, meeting);
     if (updateRes.affected > 0) {
