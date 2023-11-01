@@ -8,4 +8,7 @@ export class CreateMeetingMemberDto {
   @IsNotEmpty()
   @IsString()
   employeeId: string;
+
+  @IsString()
+  remark: string;
 }

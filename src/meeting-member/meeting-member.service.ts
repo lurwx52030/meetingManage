@@ -5,6 +5,7 @@ import { Meeting } from 'src/meeting/entities/meeting.entity';
 import { User } from 'src/user/entities/user.entity';
 import { Repository } from 'typeorm';
 import { CreateMeetingMemberDto } from './dto/create-meeting-member.dto';
+import { UpdateMeetingMemberDto } from './dto/update-meeting-member.dto';
 import { MeetingMember } from './entities/meeting-member.entity';
 
 @Injectable()
@@ -42,7 +43,6 @@ export class MeetingMemberService {
       );
     }
 
-    console.log(data.meetingId, data.employeeId);
     const exists = await this.meetingMemberRepository
       .createQueryBuilder('')
       .select()
@@ -58,7 +58,6 @@ export class MeetingMemberService {
     const meetingMember = plainToClass(MeetingMember, { ...data });
     meetingMember.meeting = plainToClass(Meeting, { ...meeting[0] });
     meetingMember.participant = employee;
-    // console.log(meetingMember);
 
     return await this.meetingMemberRepository.insert(meetingMember);
   }
@@ -71,8 +70,20 @@ export class MeetingMemberService {
 
   async findByMeeting(id: string) {
     return await this.meetingMemberRepository.query(
-      'SELECT user.id,user.name,singin,singout FROM `meeting_member` JOIN user ON user.id=participantId WHERE meetingId=?',
+      `
+        SELECT user.id,user.name,singin,singout,remark 
+        FROM \`meeting_member\` 
+        JOIN user ON user.id=participantId 
+        WHERE meetingId=?
+      `,
       [id],
+    );
+  }
+
+  async findOneByMeeting(meetingId: string, employeeId: string) {
+    return await this.meetingMemberRepository.query(
+      'SELECT * from meeting_member where meetingId=? and participantId=?',
+      [meetingId, employeeId],
     );
   }
 
@@ -136,5 +147,45 @@ export class MeetingMemberService {
     }
     const res = this.meetingMemberRepository.update(log.id, log);
     return res;
+  }
+
+  // 備註
+  async updateRmark(member: UpdateMeetingMemberDto) {
+    const meeting = await this.meetingRepository.findOne({
+      where: { id: member.meetingId },
+    });
+    if (meeting === null) {
+      return { message: '此會議不存在', status: HttpStatus.NOT_ACCEPTABLE };
+    }
+
+    const dbMembers = await this.findOneByMeeting(
+      member.meetingId,
+      member.employeeId,
+    );
+
+    let dbMember;
+
+    if (dbMembers instanceof Array && dbMembers.length !== 0) {
+      dbMember = dbMembers[0];
+      return this.meetingMemberRepository.query(
+        `
+          UPDATE meeting_member
+          SET participantId=?, meetingId=?, singin=?, singout=?, remark=?
+          WHERE id=? and participantId=? and meetingId=?;
+        `,
+        [
+          member.employeeId,
+          member.meetingId,
+          dbMember.singin,
+          dbMember.singout,
+          member.remark,
+          dbMember.id,
+          member.employeeId,
+          member.meetingId,
+        ],
+      );
+    }
+
+    throw new HttpException('這場會議沒有這位人員', HttpStatus.NOT_FOUND);
   }
 }

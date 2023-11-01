@@ -30,4 +30,11 @@ export class MeetingMember {
     nullable: true,
   })
   singout: Date;
+
+  @Column({
+    name: 'remark',
+    comment: '備註',
+    nullable: true,
+  })
+  remark: string;
 }
