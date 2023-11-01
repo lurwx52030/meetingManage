@@ -1,13 +1,13 @@
 import { Module } from '@nestjs/common';
-import { MeetingService } from './meeting.service';
-import { MeetingController } from './meeting.controller';
+import { JwtService } from '@nestjs/jwt';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { MeetingRoom } from 'src/meeting-room/entities/metting-room.entity';
+import { MeetingRoomService } from 'src/meeting-room/meeting-room.service';
+import { User } from 'src/user/entities/user.entity';
 import { Meeting } from './entities/meeting.entity';
 import { meetingSequence } from './entities/meeting.sequence';
-import { MeetingRoom } from 'src/meeting-room/entities/metting-room.entity';
-import { User } from 'src/user/entities/user.entity';
-import { MeetingRoomService } from 'src/meeting-room/meeting-room.service';
-import { JwtService } from '@nestjs/jwt';
+import { MeetingController } from './meeting.controller';
+import { MeetingService } from './meeting.service';
 
 @Module({
   controllers: [MeetingController],
