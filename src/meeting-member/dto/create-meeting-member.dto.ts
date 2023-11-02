@@ -1,4 +1,4 @@
-import { IsNotEmpty, IsString } from 'class-validator';
+import { IsNotEmpty, IsOptional, IsString } from 'class-validator';
 
 export class CreateMeetingMemberDto {
   @IsNotEmpty()
@@ -10,5 +10,6 @@ export class CreateMeetingMemberDto {
   employeeId: string;
 
   @IsString()
+  @IsOptional()
   remark: string;
 }

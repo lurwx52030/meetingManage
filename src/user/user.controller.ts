@@ -72,7 +72,6 @@ export class UserController {
           return data;
         });
       }
-      console.log(result);
 
       if (reqUser['role'] === 'employee') {
         if (reqUser['id'] !== result.id) {
