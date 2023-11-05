@@ -12,15 +12,16 @@ import { Result } from 'src/common/standardResult';
 import { Server } from 'ws';
 import { MeetingMemberService } from '../meeting-member.service';
 
-@WebSocketGateway({ cors: true })
+@WebSocketGateway()
 export class MeetingMemberGateway
   implements OnGatewayConnection, OnGatewayDisconnect, OnGatewayInit
 {
   private readonly logger = new Logger(MeetingMemberGateway.name);
-  constructor(private readonly meetingMemberService: MeetingMemberService) {}
 
   @WebSocketServer()
   server: Server;
+
+  constructor(private readonly meetingMemberService: MeetingMemberService) {}
 
   handleConnection(client: any, ...args: any[]) {
     this.logger.log('Client connected');
