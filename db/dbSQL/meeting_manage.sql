@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- 主機： containers-us-west-137.railway.app:5510
--- 產生時間： 2023 年 11 月 07 日 06:55
+-- 產生時間： 2023 年 11 月 15 日 05:47
 -- 伺服器版本： 8.1.0
 -- PHP 版本： 8.2.11
 
@@ -49,7 +49,6 @@ CREATE TABLE `meeting` (
 --
 
 INSERT INTO `meeting` (`id`, `name`, `start`, `end`, `meetingRoomId`, `creatorId`, `isCheckin`, `checkLimit`, `isCheckout`, `notificationTime`, `createTime`) VALUES
-('M056', 'rrr', '2023-10-25 20:30:00', '2023-10-18 22:07:00', 'A001', 'A124', 0, 5, 0, 15, '2023-10-25 20:17:54'),
 ('M057', 'aaa', '2023-10-19 22:19:00', '2023-10-19 23:19:00', 'A001', 'A124', 0, 5, 0, 0, '2023-10-19 21:19:57'),
 ('M058', 'ddda', '2023-10-20 21:23:00', '2023-10-20 22:23:00', 'A001', 'A121', 0, 5, 0, 0, '2023-10-19 21:23:19'),
 ('M059', '999', '2023-10-31 20:37:00', '2023-10-31 11:00:00', 'A001', 'A121', 0, 5, 0, 15, '2023-10-31 20:21:20'),
@@ -104,8 +103,6 @@ CREATE TABLE `meeting_member` (
 --
 
 INSERT INTO `meeting_member` (`id`, `participantId`, `meetingId`, `singin`, `singout`, `remark`) VALUES
-(45, 'A121', 'M056', NULL, NULL, NULL),
-(46, 'P555', 'M056', NULL, NULL, NULL),
 (47, 'A121', 'M061', NULL, NULL, NULL),
 (50, 'A121', 'M063', NULL, NULL, NULL),
 (51, 'P555', 'M063', NULL, NULL, NULL),
