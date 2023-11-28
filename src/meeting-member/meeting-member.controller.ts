@@ -15,7 +15,7 @@ import { RoleGuard } from 'src/role/role.guard';
 import { UpdateResult } from 'typeorm';
 import { CreateMeetingMemberDto } from './dto/create-meeting-member.dto';
 import { UpdateMeetingMemberDto } from './dto/update-meeting-member.dto';
-import meetingCreatorInterceptor from './interceptors/meeting-creator.interceptor';
+import meetingCreatorGuard from './guards/meeting-creator.guard';
 import { MeetingMemberService } from './meeting-member.service';
 
 @Controller('meeting-member')
@@ -58,7 +58,7 @@ export class MeetingMemberController {
   }
 
   @Put('remark')
-  @UseInterceptors(meetingCreatorInterceptor)
+  @UseInterceptors(meetingCreatorGuard)
   async updateRmark(@Body() member: UpdateMeetingMemberDto) {
     const res = await this.meetingMemberService.updateRmark(member);
     return res.affectedRows > 0

@@ -7,7 +7,8 @@ import { Meeting } from 'src/meeting/entities/meeting.entity';
 import { MeetingService } from 'src/meeting/meeting.service';
 import { User } from 'src/user/entities/user.entity';
 import { MeetingMember } from './entities/meeting-member.entity';
-import meetingCreatorInterceptor from './interceptors/meeting-creator.interceptor';
+import meetingCreatorGuard from './guards/meeting-creator.guard';
+import meetingFileRoleGuard from './guards/meeting-file-role.guard';
 import { MeetingMemberController } from './meeting-member.controller';
 import { MeetingMemberService } from './meeting-member.service';
 import { MeetingMemberGateway } from './websocket/meeting-member.gateway';
@@ -23,7 +24,8 @@ import { MeetingMemberGateway } from './websocket/meeting-member.gateway';
     MeetingRoomService,
     JwtService,
     MeetingMemberGateway,
-    meetingCreatorInterceptor,
+    meetingCreatorGuard,
+    meetingFileRoleGuard,
   ],
 })
 export class MeetingMemberModule {}
