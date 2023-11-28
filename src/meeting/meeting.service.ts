@@ -45,14 +45,10 @@ export class MeetingService {
       throw new HttpException('此員工不存在', HttpStatus.NOT_ACCEPTABLE);
     }
 
-    const newBorrowStart = new Date(
-      dayjs(data.start).format('YYYY-MM-DD HH:mm:ss'),
-    );
-    const newBorrowEnd = new Date(
-      dayjs(data.end).format('YYYY-MM-DD HH:mm:ss'),
-    );
+    const newBorrowStart = dayjs(data.start);
+    const newBorrowEnd = dayjs(data.end);
     // console.log(newBorrowStart, newBorrowEnd);
-    const current = new Date();
+    const current = dayjs(new Date());
 
     if (newBorrowStart < current) {
       throw new HttpException(
@@ -80,8 +76,8 @@ export class MeetingService {
       //   new Date(borrowed.end),
       // )
       if (
-        dayjs(newBorrowStart).isBetween(borrowed.start, borrowed.end) ||
-        dayjs(newBorrowEnd).isBetween(borrowed.start, borrowed.end)
+        newBorrowStart.isBetween(borrowed.start, borrowed.end, null, '[]') ||
+        newBorrowEnd.isBetween(borrowed.start, borrowed.end, null, '[]')
       ) {
         throw new HttpException(
           '此會議室在這個時間點已被借用',
@@ -94,8 +90,8 @@ export class MeetingService {
     meeting.meetingRoom = meetingRoom;
     meeting.creator = creator;
     meeting.createTime = new Date();
-    meeting.start = newBorrowStart;
-    meeting.end = newBorrowEnd;
+    meeting.start = newBorrowStart.toDate();
+    meeting.end = newBorrowEnd.toDate();
     return await this.meetingRepository.insert(meeting);
   }
 
