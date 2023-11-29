@@ -250,11 +250,8 @@ export class MeetingService {
 
     dayjs.extend(isBetween);
     const current = new Date();
-    if (!dayjs(current).isBetween(meeting.start, meeting.end)) {
-      throw new HttpException(
-        '會議尚未開始或會議已結束',
-        HttpStatus.NOT_ACCEPTABLE,
-      );
+    if (dayjs(current).isBefore(meeting.start)) {
+      throw new HttpException('會議尚未開始', HttpStatus.NOT_ACCEPTABLE);
     }
 
     meeting.isCheckout = state === 1;
