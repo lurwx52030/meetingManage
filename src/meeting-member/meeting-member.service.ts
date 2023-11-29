@@ -87,15 +87,15 @@ export class MeetingMemberService {
     );
   }
 
-  async remove(id: string, meetingid: string) {
+  async remove(id: string, meetingId: string) {
     return await this.meetingMemberRepository.query(
       'DELETE FROM `meeting_member` WHERE participantId=? and  meetingId=?',
-      [id, meetingid],
+      [id, meetingId],
     );
   }
 
   //簽到簽退
-  async attendance(id: string, meetingid: string, isSignIn: boolean) {
+  async attendance(id: string, meetingId: string, isSignIn: boolean) {
     const employee = await this.userRepository.findOne({
       where: { id },
     });
@@ -104,7 +104,7 @@ export class MeetingMemberService {
     }
 
     const meeting = await this.meetingRepository.findOne({
-      where: { id: meetingid },
+      where: { id: meetingId },
     });
     if (meeting === null) {
       return { message: '此會議不存在', status: HttpStatus.NOT_ACCEPTABLE };
@@ -120,18 +120,18 @@ export class MeetingMemberService {
 
     const current = new Date();
 
-    if (current < meeting.start) {
+    if (current < meeting.start && isSignIn) {
       throw new HttpException('會議尚未開始', HttpStatus.NOT_ACCEPTABLE);
     }
 
-    if (current > meeting.end) {
-      throw new HttpException('會議已結束', HttpStatus.NOT_ACCEPTABLE);
-    }
+    // if (current > meeting.end) {
+    //   throw new HttpException('會議已結束', HttpStatus.NOT_ACCEPTABLE);
+    // }
 
     const log = await this.meetingMemberRepository
       .createQueryBuilder('')
       .select()
-      .where('meetingId = :meetingId', { meetingId: meetingid })
+      .where('meetingId = :meetingId', { meetingId: meetingId })
       .andWhere('participantId = :participantId', {
         participantId: id,
       })
@@ -140,9 +140,9 @@ export class MeetingMemberService {
     if (isSignIn) {
       log.singin = current;
     } else {
-      if (log.singin === null) {
-        throw new HttpException('尚未簽到', HttpStatus.NOT_ACCEPTABLE);
-      }
+      // if (log.singin === null) {
+      //   throw new HttpException('尚未簽到', HttpStatus.NOT_ACCEPTABLE);
+      // }
       log.singout = current;
     }
     const res = this.meetingMemberRepository.update(log.id, log);
@@ -164,7 +164,6 @@ export class MeetingMemberService {
     );
 
     let dbMember;
-
     if (dbMembers instanceof Array && dbMembers.length !== 0) {
       dbMember = dbMembers[0];
       return this.meetingMemberRepository.query(
