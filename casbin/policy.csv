@@ -21,9 +21,9 @@ p, role:employee, /meeting-member, *
 p, role:employee, /meeting-member/:id, *
 p, role:employee, /meeting-member/meeting, *
 p, role:employee, /meeting-member/meeting/:id, *
-p, role:employee, /meeting-member/signin/:meetingid/:id, *
-p, role:employee, /meeting-member/signout/:meetingid/:id, *
-p, role:employee, /meeting-member/:meetingid/:id, *
+p, role:employee, /meeting-member/signin/:meetingId/:id, *
+p, role:employee, /meeting-member/signout/:meetingId/:id, *
+p, role:employee, /meeting-member/:meetingId/:id, *
 
 p, role:employee, /meeting-file, *
 p, role:employee, /meeting-file/:meetingId, *
