@@ -20,6 +20,7 @@ import * as fs from 'fs';
 import { join } from 'path';
 import commonLogger from 'src/common/loggerController';
 import { Result } from 'src/common/standardResult';
+import meetingFileRoleGuard from 'src/meeting-member/guards/meeting-file-role.guard';
 import { MeetingService } from 'src/meeting/meeting.service';
 import { RoleGuard } from 'src/role/role.guard';
 import { MeetingFileService } from './meeting-file.service';
@@ -35,9 +36,7 @@ export class MeetingFileController extends commonLogger {
   }
 
   @Post('/:meetingId')
-  @UseGuards(AuthGuard('jwt'))
-  @UseGuards(RoleGuard)
-  // @UseInterceptors(meetingFileRoleInterceptor)
+  @UseGuards(AuthGuard('jwt'), RoleGuard, meetingFileRoleGuard)
   @UseInterceptors(FilesInterceptor('file'))
   async create(
     @Req() request: Request,
@@ -65,8 +64,6 @@ export class MeetingFileController extends commonLogger {
   }
 
   @Get('/:meetingId')
-  @UseGuards(RoleGuard)
-  @UseGuards(AuthGuard('jwt'))
   getDownloadList(
     @Req() request: Request,
     @Param('meetingId') meetingId: string,
@@ -109,9 +106,7 @@ export class MeetingFileController extends commonLogger {
   }
 
   @Delete('/:path')
-  @UseGuards(RoleGuard)
-  @UseGuards(AuthGuard('jwt'))
-  // @UseInterceptors(meetingFileRoleInterceptor)
+  @UseGuards(AuthGuard('jwt'), RoleGuard, meetingFileRoleGuard)
   remove(@Param('path') path: string) {
     const fullPath = join(__dirname, '../../', 'uploads', path);
     if (!fs.existsSync(fullPath)) {

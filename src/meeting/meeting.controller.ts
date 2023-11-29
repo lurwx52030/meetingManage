@@ -7,7 +7,6 @@ import {
   Post,
   Put,
   UseGuards,
-  UseInterceptors,
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { Result } from 'src/common/standardResult';
@@ -81,7 +80,7 @@ export class MeetingController {
   }
 
   @Get('/checkout/:id/:status')
-  @UseInterceptors(meetingCreatorGuard)
+  @UseGuards(meetingCreatorGuard)
   async checkout(@Param('id') id: string, @Param('status') status: number) {
     const res = await this.meetingService.Checkoutstatus(id, +status);
     return Result.ok(res, `已${res ? '開啟' : '關閉'}簽退`);
