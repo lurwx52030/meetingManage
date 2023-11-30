@@ -140,9 +140,9 @@ export class MeetingMemberService {
     if (isSignIn) {
       log.singin = current;
     } else {
-      // if (log.singin === null) {
-      //   throw new HttpException('尚未簽到', HttpStatus.NOT_ACCEPTABLE);
-      // }
+      if (log.singin === null) {
+        throw new HttpException('尚未簽到', HttpStatus.NOT_ACCEPTABLE);
+      }
       log.singout = current;
     }
     const res = this.meetingMemberRepository.update(log.id, log);
